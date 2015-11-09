@@ -1,7 +1,7 @@
 /************************************
 *    name: cong qiu                 *
 *    email: congq@g.clemson.edu     *
-*    date: OCT, 4th, 2015           *
+*    date: NOV, 4th, 2015           *
 *************************************/
 
 #include"myimage.h"

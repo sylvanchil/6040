@@ -6,7 +6,7 @@
 
 #include"myimage.h"
 #include"filter.h"
-
+#include"Matrix.h"
 
 class ImageProcess{
 public:
@@ -25,6 +25,7 @@ public:
 	//Gabor filter 
 	void applyGaborFilterTo(MyImage& img, float t, float s,float p);
 	
-	void inverseMapping(const MyImage& source, MyImage& desImg);
+	void inverseMapping(MyImage& img, Matrix3x3 m);
+	
 
 };

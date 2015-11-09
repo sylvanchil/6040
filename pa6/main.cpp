@@ -213,6 +213,40 @@ void display(void)
 	glFlush();
 }
 
+
+
+void handleKey(unsigned char key,int x, int y){
+	x=x;//useless, just get rid of the warning
+	y=y;//useless, just get rid of the warning
+	switch(key){	
+		case 'w':
+		case 'W':
+			if(manager.canWrite()){
+				if(manager.save()){
+					std::cout << "saved"<< std::endl;
+				}
+				else{
+					std::cout << "save file false" << std::endl;
+				}
+			}
+			else{
+				std::cout << "no filename" << std::endl;
+			}
+			break;
+		case 'q':
+		case 'Q':
+		case 27:
+			exit(0);
+			break;
+		default:
+			break;
+	}
+	glutPostRedisplay();
+}
+
+
+
+
 int main(int argc, char** argv){
 
 
@@ -247,6 +281,8 @@ int main(int argc, char** argv){
 	glutInitWindowPosition(0, 0);
 	glutCreateWindow(argv[0]);
 	glutDisplayFunc(display);
+	
+	glutKeyboardFunc(handleKey);
 	glutMainLoop();
 	return 0;
 

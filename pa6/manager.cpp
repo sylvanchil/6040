@@ -58,29 +58,10 @@ void Manager::run(){
 		exit(-1);	
 	}
 
-	int imageWidth= originImage.width;
-	int imageHeight= originImage.height;
-	int imageChannels= originImage.channels;
-
-	Vector3d topleft(0,0,1);
-	Vector3d topright(imageWidth,0,1);
-	Vector3d buttomleft(0,imageHeight,1);
-	Vector3d buttomright(imageWidth,imageHeight,1);
-
-	Vector3d newTopLeft(matrix3 * topleft); 
-	Vector3d newTopRight(matrix3 * topright); 
-	Vector3d newButtomLeft(matrix3 * buttomleft); 
-	Vector3d newButtomRight(matrix3 * buttomright); 
-
-	cout << newTopLeft<< endl;
-	cout << newTopRight << endl;
-	cout << newButtomLeft << endl;
-	cout << newButtomRight << endl;
-
 	//initialize the result image
 	resultImage = originImage;
+	ip.inverseMapping(resultImage, matrix3);
 }
-
 bool Manager::save(){
 	//save the current result
 	if(!FileIO::getInstance().writeImageToFile(resultImage,resultFilename)){

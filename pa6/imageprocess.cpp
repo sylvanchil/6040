@@ -167,11 +167,11 @@ void ImageProcess::applyGaborFilterTo(MyImage& m, float t, float s, float p){
 	delete value;
 }
 
-void ImageProcess::inverseMapping(const MyImage& srcImg, MyImage& desImg){
+void ImageProcess::inverseMapping( MyImage& img, Matrix3x3 m){
 	
 
-
 }
+
 
 
 

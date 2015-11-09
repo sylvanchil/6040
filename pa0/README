@@ -1,0 +1,32 @@
+name: cong qiu
+email: congq@g.clemson.edu
+
+Description:
+This little program is the first programming assignment of 6040. What it dose is basically what is required in the assignment which are:
+	a) reading and displaying the iamge
+	b) flip the image vertically or horizontally
+	c) display the single color channel of the image
+	d) save what you see
+	e) handle command line, keyboard and mouse action.
+
+Usage:
+	make
+	./oiioview [inputfilename] [outputfilename]
+
+[outputfilename] is optional.
+
+Known bug:
+	When display one channels greyscale image then save, it displays the original image instead of stay what it was before the image saving.
+
+About Datastructure:
+	The Datastructure I used to store an image is 3D vector, and 3 dangling global variable of extra information. (It turns out to be a bad idea to use vector.As I put them in a class, the vector tends to copy and copy and copy, it slows down the program a lot.)
+
+Functional requirements:
+Image Display: Function display() do the displaying. In function display(), glDrawpixel is called, display_data is the only buffer where glDrawpixel get its data from. In each loop, 
+Reading Image: In function read_file(), data of an image are read in to a 3D vector.
+Writing Image: Before the true file writing, the output_file buffer will be filled be data. Then the function write_to_file() is called;
+Image Manipulation: I have exploited STL the do the flipping, just simply reverse lines or columns of the vector.
+Command Line Behavior: arguments are handled in the first a few lines in main function.
+Interaction: function handleKey and function handleMouseClick, these two will be called in every loop
+
+

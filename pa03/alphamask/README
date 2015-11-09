@@ -33,8 +33,8 @@ Basic usage of alphamask:
 			output composited image
 
 For example:
-	./alphamask gshelnu.jpg maskedImage.png -pv -l -c back.jpg -o result.png
-	this command means process gshelnu.jpg with pv's algorithm , then store the processed image to maskedImage.png. After that composite the image with back.jpg, output to result.png. The "-l" option means that it is on live mode, so we can use upkey or downkey, or mouse to change the k value then see the instant result.
+	./alphamask levinej.jpg maskedImage.png -pv -l -c back.jpg -o result.png
+	this command means process levinej.jpg with pv's algorithm , then store the processed image to maskedImage.png. After that composite the image with back.jpg, output to result.png. The "-l" option means that it is on live mode, so we can use upkey or downkey, or mouse to change the k value then see the instant result.
 
 composite is in composite folder, to make:
 	make

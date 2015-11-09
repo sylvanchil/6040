@@ -94,10 +94,10 @@ int main(int argc, char** argv){
 
 	manager.run();
 
-	//live Flag is not on, bye!
-	if(!manager.isLive()){
+	//no liveview bye!
+	if(manager.noDisplay()){
 		return 0;}
-
+	
 	init();	
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE|GLUT_RGBA);

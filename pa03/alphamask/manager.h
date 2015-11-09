@@ -16,11 +16,17 @@ public:
 	bool parseArgs(int argc, char** argv);
 	void helpInfo();
 	void run();
-	bool isLive();
+	//display or not
+	bool noDisplay();
+	//output image data to displaying buffer
 	void display(unsigned char* des);
+	//initialize the display buffer and windowsize 
 	void prepare(int& wid, int& hei, unsigned char* disData);
+	//increase K value;
 	void incrK();
+	//decrease K
 	void decK();
+	//get pixel value rgb then do hsv mask 
 	void directHSVMask(int x, int y);
 
 
@@ -74,23 +80,25 @@ private:
 	bool gFlag;
 	bool kFlag;
 	float pvK;
-
+	//live view flag 
 	bool lFlag;
+	//compositing flag
 	bool cFlag;
+	//output flag
 	bool oFlag;
 	char* originFilename;
 	char* maskedFilename;
 	char* backgroundFilename;
 	char* outputFilename;
+	//to process image 
 	ImageProcess ip;
 	MyImage originImage;
 	MyImage maskedImage;
 	MyImage bgImage;
 	MyImage outputImage;
-
+//obsolete
 	void setParam(bool pf, bool sf, float k, char* inamea, char* inameb);
 	Manager(const Manager& m);
 	Manager& operator=(const Manager& m);
-
 
 };

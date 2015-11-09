@@ -190,9 +190,13 @@ void Manager::run(){
 
 }
 
-bool Manager::isLive(){
-	return lFlag;
+bool Manager::noDisplay(){
+	if(!lFlag && !cFlag)
+		return true;
+	else
+		return false;
 }
+
 
 void Manager::display(unsigned char* des){
 	if(!cFlag){

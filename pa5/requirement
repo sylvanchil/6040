@@ -1,0 +1,21 @@
+programname: tonemap
+read from the first three channals. 
+datas are float, change to TypeDesc::FLOAT
+w or W write the tone mapped image to .exr .hdr and .png 
+
+glDrawPixels to display, change glunsignedbyte to glfloat
+
+s or S to switch between result and original
+
+simple tone mapping, to do
+tone mapping with convolution 
+bilateral filter,
+
+
+
+
+
+
+
+
+

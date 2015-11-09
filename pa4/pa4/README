@@ -1,0 +1,44 @@
+/************************************
+*    name: cong qiu                 *
+*    email: congq@g.clemson.edu     *
+*    date: OCT, 4th, 2015           *
+*************************************/
+
+I.Description:
+This program finish all requirement in pa4. Experiments in experiments folder, new filter in the newfilter folder
+
+II.Usage:
+a)make
+	make
+b)run with normal filter
+	./filt <filtfile> <imagefile> [outputfile]
+or with gabor filter
+	./filt -g <theta> <sigma> <period> <imagefile> [outputfile]
+
+ps. <> is required, [] is optional, add "-t" to output file without displaying.
+
+c)to generate experiment results, after make, run experiment.sh
+	chmod +x experiment.sh
+	./experiment.sh
+
+III.Code Structure:
+	There are 5 classes, they are Manager FileIO MyImage Filter ImageProcess.
+		Manager		manage all resource including MyImage and Filter and ImageProcess. It also parse argument and interact with main function.
+		FileIo 		read from file to modify a MyImage or a Filter.
+		MyImage 	store data and properties of a image.
+		Filter 		store data and properties of a Filter. 
+		ImageProcess	 Process MyImage by using Filters.
+
+	requirement:
+		IO 			basically done by singleton class FileIO
+		display, 	object of MyImage could output its data to desinated displayingbuffer
+		convolve 	done by ImageProcess, in applyFilterTo(MyImage& m, Filter f) function.
+		boundary, 	using reflection to handle boundary
+		scaling, 	done when reading the Filter file.
+		experiment, see the script, after running the script, the result will be stored in experiments folder
+		new filter  see newfilter folder
+		gaborfilter implemented in ImageProcess::applyGaborFilterto(), first, it generats a Filter, then call applyFilterTo().
+		
+IV.Attribution
+	Makefile is originally writen by DJ, I made some modification on it to fit this project.
+

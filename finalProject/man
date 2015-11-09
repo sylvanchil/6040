@@ -1,0 +1,4 @@
+basic usage:
+	filt filt.filt imagename [outputname]
+or
+	filt -g theta sigma period imagename [outputname]

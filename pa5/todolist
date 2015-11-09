@@ -1,0 +1,10 @@
+modify manager.run();
+	
+manager.prepare();
+	maybe done
+response to s key
+
+modify FileIO::readFromFileToImage
+
+modify FileIO::writImageToFile
+

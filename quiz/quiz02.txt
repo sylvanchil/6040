@@ -1,0 +1,31 @@
+congq@g.clemson.edu
+3:20 10012015
+
+1. a)3 xy for corners of the triangle are: red(0.64,0.33), green(0.30,0.60),blue(0.15, 0.06)
+	b) when (x,y) = (0.00,0.90), R channel is negative; when (x,y) = (0.9,0.1), R channel greater than 1
+2. hue: color
+	sutration : 
+	value;
+
+3. A(0.125,0.0625,0.0625)
+   B(0.60,0.15,0.60)
+   A over B(0.2375,0.5125,0.1750)
+   by using CP = aACA + (1-aA)aBCB	
+
+4.
+	long hist[256];
+	for(int i = 0;i< 256; i++){
+		hist[i]=0;
+	}
+	for(int h =0; h< H; h++){
+		for(int w=0; w < W; w++){
+			hist[image[h][w]]++;
+		}
+	}
+	return hist;
+
+5.
+	lookup table is for color value, so the lenght if it should be 255 instead of W*H
+	line 15, should be row < H;
+	line 16, should be col < W;
+

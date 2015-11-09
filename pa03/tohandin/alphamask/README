@@ -1,0 +1,39 @@
+name: cong qiu
+email: congq@g.clemson.edu
+date: Sep, 29th, 2015
+
+I.Description:
+Consist of two program: alplamask and composite
+alplamask generate a alplamasked image from a green screen image.
+composite composite the masked image with a background image.
+
+
+II.Usage:
+In alphamask folder to make:
+	make 
+to run:
+	alphamask [filename1] [outputfilename] -pv -ss 
+to show help information:
+	alphamask
+For example:
+	alphamask greenscreen/gshelnu.jpg fore.png
+	
+In composite folder, to make:
+	make
+then run as:
+	composite [foreimage] [backgroundimage] 
+or 
+	composite [foreimage] [backgroundimage] [outputfilename]
+For example:
+	composite fore.png background.jpg result.png
+
+III.Code Structure:
+Alphamask
+	There are 4 classes in this program:
+	Manager, handle argumets
+	MyImage, the class we use to store image data, it member function over() takes in another MyImage object, cover over it, return the covering result.
+	FileIO, read file into MyImage
+	ImageProcess, process the MyImage. Currently has one member function which is setAlpha(). This function set alpha value for each pixel base on the input flag.
+
+Composite
+	Same classes are used as it in Alphamask. The rotine is quite straight forward,that is, it use FileIO to readin Images, then use the aforementioned member function "over()" of MyImage to composite a new image, then display the new image, or use FileIO to save it to new file.

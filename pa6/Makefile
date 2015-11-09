@@ -39,6 +39,7 @@ clean:
 	rm -rf $(EXEC)
 	rm -rf frames/*.bmp
 	rm -rf *.d.*
+	rm -rf *.gch
 # Phony target to use clang for compile and linking
 setclang:
 	@echo "Setting clang"

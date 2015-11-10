@@ -14,7 +14,6 @@ MyImage::MyImage(int wid, int hei, int chan, unsigned char* dat):
 	data(new unsigned char[width*height*channels])
 {
 	memcpy(data, dat, width*height*channels);
-
 }
 
 
@@ -77,35 +76,9 @@ void MyImage::displayOutput(unsigned char* desBuff){
 		for(int x = 0;x < width; x++){
 			for(int c = 0; c < channels; c++){
 				desBuff[c + x *channels + (height-1-y)*width*channels] = data[c + x *channels + y * width * channels];
-			
 			}
 		}
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

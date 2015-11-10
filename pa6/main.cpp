@@ -274,6 +274,7 @@ int main(int argc, char** argv){
 
 	manager.takeMatrix(M);
 
+
 	init();	
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE|GLUT_RGBA);

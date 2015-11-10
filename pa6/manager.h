@@ -40,7 +40,7 @@ public:
 		centerX(),
 		centerY(),
 
-		matrix3(Matrix3x3()),
+		matrix3(Matrix3x3(0,0,0,0,0,0,0,0,0)),
 		originImage(MyImage()),
 		resultImage(MyImage()),
 		ip(ImageProcess())

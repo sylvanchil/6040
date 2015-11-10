@@ -250,9 +250,15 @@ void ImageProcess::inverseMapping( MyImage& img, Matrix3x3 m){
 			for(int c = 0; c< newImageChannels ; c ++){
 				int ox= pixelPos[0];
 				int oy= pixelPos[1];
+				
+				if(ox>0 && ox < img.width && oy > 0 && oy < img.height){
 				newImageData[y*newImageWidth*newImageChannels + x*newImageChannels +c]=	
 					img.data[oy*img.width*img.channels + ox*img.channels + c];
-				
+				}
+				else{
+					
+				newImageData[y*newImageWidth*newImageChannels + x*newImageChannels +c]=	0;
+				}
 			}
 
 		}

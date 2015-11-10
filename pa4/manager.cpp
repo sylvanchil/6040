@@ -80,6 +80,7 @@ void Manager::run(){
 		exit(-1);	
 	}
 	//initialize the result image
+	originImage = originImage.to4ChannelsImage();
 	resultImage = originImage;
 	historyImages.push_back(MyImage(resultImage));
 	if(!gFlag){

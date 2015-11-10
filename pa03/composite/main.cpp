@@ -34,8 +34,9 @@ void init(void)
 //callback in glut loop
 void display(void)
 {
-	glClear(GL_COLOR_BUFFER_BIT);
+	std::cout << imageToBeOutput.getWidth() << " " << imageToBeOutput.getHeight() << " " << imageToBeOutput.getChannels()<<std::endl;
 
+	glClear(GL_COLOR_BUFFER_BIT);
 	glDrawPixels(imageToBeOutput.getWidth(), imageToBeOutput.getHeight(), GL_RGBA, GL_UNSIGNED_BYTE, display_data);
 	glFlush();
 }

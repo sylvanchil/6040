@@ -57,7 +57,8 @@ void Manager::run(){
 	if(!FileIO::getInstance().readFromFileToImage(originImage,imageFilename)){
 		exit(-1);	
 	}
-
+	originImage = originImage.to4ChannelsImage();
+	
 	//initialize the result image
 	resultImage = originImage;
 //	if(twrilModeOn){
@@ -66,7 +67,7 @@ void Manager::run(){
 //	else{
 		ip.inverseMapping(resultImage, matrix3);
 //	}
-	save();
+//	save();
 
 }
 bool Manager::save(){
@@ -98,8 +99,12 @@ void Manager::display(unsigned char* des){
 
 void Manager::prepare(int& w, int& h, int& c){
 	//set weight height channels for displaying
-	w = resultImage.getWidth();
-	h = resultImage.getHeight();
-	c = resultImage.getChannels();
+///	w = resultImage.getWidth();
+//	h = resultImage.getHeight();
+//	c = resultImage.getChannels();
+	w = originImage.getWidth();
+	h = originImage.getHeight();
+	c = originImage.getChannels();
+	
 }
 

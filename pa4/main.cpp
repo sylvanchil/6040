@@ -28,7 +28,7 @@ void init(void)
 {
 	manager.run();
 	manager.prepare(windowWidth,windowheight,chanls);
-	display_data = new unsigned char[windowWidth*windowheight*4];
+	display_data = new unsigned char[windowWidth*windowheight*chanls];
 	glClearColor(0, 0, 0, 0);
 	glShadeModel(GL_FLAT);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);

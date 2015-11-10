@@ -60,8 +60,12 @@ void Manager::run(){
 
 	//initialize the result image
 	resultImage = originImage;
-	ip.inverseMapping(resultImage, matrix3);
-	
+//	if(twrilModeOn){
+//		ip.inverseMapping(resultImage, strength, centerX , centerY);
+//	}	
+//	else{
+		ip.inverseMapping(resultImage, matrix3);
+//	}
 	save();
 
 }
@@ -78,14 +82,24 @@ bool Manager::canWrite(){
 	return writeFlag;
 }
 
+void Manager::turnTwrilModeOn(double s, double x,double y){
+	twrilModeOn = true;
+	strength = s;
+	centerX = x;
+	centerY = y;
+
+}
+
+
+
 void Manager::display(unsigned char* des){
 	resultImage.displayOutput(des);
 }
 
 void Manager::prepare(int& w, int& h, int& c){
 	//set weight height channels for displaying
-	w = originImage.getWidth();
-	h = originImage.getHeight();
-	c = originImage.getChannels();
+	w = resultImage.getWidth();
+	h = resultImage.getHeight();
+	c = resultImage.getChannels();
 }
 

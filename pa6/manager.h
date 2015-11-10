@@ -24,6 +24,7 @@ public:
 	void run();
 	bool save();
 	bool canWrite();
+	void turnTwrilModeOn(double s, double x, double y);
 	//output image data to displaying buffer
 	void display(unsigned char* des);
 	//initialize the display buffer and windowsize 
@@ -33,7 +34,12 @@ public:
 		writeFlag(false),
 		imageFilename(new char[0]),
 		resultFilename(new char[0]),
-		
+			
+		twrilModeOn(false),
+		strength(),
+		centerX(),
+		centerY(),
+
 		matrix3(Matrix3x3()),
 		originImage(MyImage()),
 		resultImage(MyImage()),
@@ -46,7 +52,13 @@ private:
 	bool writeFlag;
 	char* imageFilename;
 	char* resultFilename;
-	
+
+	bool twrilModeOn;
+
+	double strength;
+	double centerX;
+	double centerY;
+
 	Matrix3x3 matrix3;
 
 	MyImage originImage;

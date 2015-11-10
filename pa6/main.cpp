@@ -78,8 +78,8 @@ void Shear(Matrix3x3 &M, float hx, float hy){
 	int row, col;
 	Matrix3x3 R(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
 
-	R[0][2] = hx;
-	R[1][2] = hy;
+	R[0][1] = hx;
+	R[1][0] = hy;
 
 	Matrix3x3 Prod = R * M;
 

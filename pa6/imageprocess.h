@@ -27,7 +27,7 @@ public:
 	
 	void inverseMapping(MyImage& img, Matrix3x3 m);
 
-	void inverseMapping(MyImage& img, double cx, double cy, double s);
+//	void inverseMapping(MyImage& img, double cx, double cy, double s);
 
 
 };

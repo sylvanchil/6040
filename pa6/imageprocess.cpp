@@ -263,7 +263,7 @@ void ImageProcess::inverseMapping( MyImage& img, Matrix3x3 m){
 	
 }
 
-
+//void  ImageProcess::inverseMapping(MyImage& img, double)
 
 
 

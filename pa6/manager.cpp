@@ -61,6 +61,9 @@ void Manager::run(){
 	//initialize the result image
 	resultImage = originImage;
 	ip.inverseMapping(resultImage, matrix3);
+	
+	save();
+
 }
 bool Manager::save(){
 	//save the current result

@@ -26,6 +26,8 @@ public:
 	void applyGaborFilterTo(MyImage& img, float t, float s,float p);
 	
 	void inverseMapping(MyImage& img, Matrix3x3 m);
-	
+
+	void inverseMapping(MyImage& img, double cx, double cy, double s);
+
 
 };

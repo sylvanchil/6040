@@ -1,8 +1,8 @@
 /************************************
-*    name: cong qiu                 *
-*    email: congq@g.clemson.edu     *
-*    date: OCT, 4th, 2015           *
-*************************************/
+ *    name: cong qiu                 *
+ *    email: congq@g.clemson.edu     *
+ *    date: OCT, 4th, 2015           *
+ *************************************/
 
 #include"imageprocess.h"
 #include<cstdlib>
@@ -91,9 +91,9 @@ void ImageProcess::applyFilterTo(MyImage& m,Filter f){
 	int findex = 0;
 	int yoffset= 0;
 	int xoffset=0;
-//store the compute then normalize with them	
+	//store the compute then normalize with them	
 	float * tmpData = new float[m.height*m.width*m.channels];
-	
+
 	for(int h = 0; h != m.height; h ++){
 		for(int w = 0; w!= m.width ; w ++){
 
@@ -149,7 +149,7 @@ void ImageProcess::applyFilterTo(MyImage& m,Filter f){
 
 }
 void ImageProcess::applyGaborFilterTo(MyImage& m, float t, float s, float p){
-//	const float e= 2.71828;
+	//	const float e= 2.71828;
 	const float pi = 3.14159;
 	float kx, ky, a;
 	int size = s*2+1;
@@ -168,10 +168,100 @@ void ImageProcess::applyGaborFilterTo(MyImage& m, float t, float s, float p){
 }
 
 void ImageProcess::inverseMapping( MyImage& img, Matrix3x3 m){
+	Vector3d topLeft	(0			,0			, 1);
+	Vector3d topRight	(img.width	,0			, 1);
+	Vector3d buttomLeft	(0			,img.height	, 1);
+	Vector3d buttomRight(img.width	,img.height	, 1);
+
+	topLeft = m* topLeft;
+	topRight = m*topRight;
+	buttomLeft = m* buttomLeft;
+	buttomRight = m* buttomRight;
+
+	double xs[4]= { topLeft[0], topRight[0], buttomLeft[0], buttomRight[0]};
+	double ys[4]= { topLeft[1], topRight[1], buttomLeft[1], buttomRight[1]};
+
+	double maxx, minx, maxy, miny;
+
+	if(xs[0]> xs[1]){
+		maxx = xs[0];
+		minx = xs[1];
+	}else{
+		maxx = xs[1];
+		minx = xs[0];
+	}
+
+	if(xs[2]> maxx){
+		maxx = xs[2];
+	}else if(xs[2]< minx){
+		minx = xs[2];
+	}
+
+	if(xs[3]> maxx){
+		maxx = xs[3];
+	}else if(xs[3]< minx){
+		minx = xs[3];
+	}
+//y max min
+	if(ys[0]> ys[1]){
+		maxy = ys[0];
+		miny = ys[1];
+	}else{
+		maxy = ys[1];
+		miny = ys[0];
+	}
+
+	if(ys[2]> maxy){
+		maxy = ys[2];
+	}else if(ys[2]< miny){
+		miny = ys[2];
+	}
+
+	if(ys[3]> maxy){
+		maxy = ys[3];
+	}else if(ys[3]< miny){
+		miny = ys[3];
+	}
+
+
+
+	//translation, to move the image to center;
+
+	Matrix3x3 inversedMatrix = m.inv();
 	
+	inversedMatrix[0][2]-=minx;
+	inversedMatrix[1][2]-=miny;
 
+	
+	//prepara data for new image
+	int newImageWidth = maxx - minx;
+	int newImageHeight = maxy - miny;
+	int newImageChannels = img.channels;
+	unsigned char* newImageData = new unsigned char[newImageWidth * newImageHeight* newImageChannels];
+
+	memset(newImageData , 0, newImageWidth* newImageHeight* newImageChannels);
+	
+	//inverse mapping
+	for(int y= 0;y < newImageHeight ;y ++){
+		for(int x = 0; x < newImageWidth; x ++ ){
+			Vector3d pixelPos(x,y,1);
+			pixelPos = inversedMatrix*pixelPos;
+		
+			for(int c = 0; c< newImageChannels ; c ++){
+				int ox= pixelPos[0];
+				int oy= pixelPos[1];
+				newImageData[y*newImageWidth*newImageChannels + x*newImageChannels +c]=	
+					img.data[oy*img.width*img.channels + ox*img.channels + c];
+				
+			}
+
+		}
+	}
+
+	img = MyImage(newImageWidth, newImageHeight, newImageChannels, newImageData);
+
+	
 }
-
 
 
 

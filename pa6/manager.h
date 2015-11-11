@@ -35,10 +35,10 @@ public:
 		imageFilename(new char[0]),
 		resultFilename(new char[0]),
 			
-		twrilModeOn(false),
-		strength(),
-		centerX(),
-		centerY(),
+		twrilModeOn(true),
+		strength(7),
+		centerX(0.5),
+		centerY(0.5),
 
 		matrix3(Matrix3x3(0,0,0,0,0,0,0,0,0)),
 		originImage(MyImage()),

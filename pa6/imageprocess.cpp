@@ -202,7 +202,7 @@ void ImageProcess::inverseMapping( MyImage& img, Matrix3x3 m){
 	}else if(xs[3]< minx){
 		minx = xs[3];
 	}
-//y max min
+	//y max min
 	if(ys[0]> ys[1]){
 		maxy = ys[0];
 		miny = ys[1];
@@ -226,13 +226,20 @@ void ImageProcess::inverseMapping( MyImage& img, Matrix3x3 m){
 
 
 	//translation, to move the image to center;
-
-	Matrix3x3 inversedMatrix = m.inv();
 	
-	inversedMatrix[0][2]-=minx;
-	inversedMatrix[1][2]-=miny;
-
 	
+//	Matrix3x3 originalInversedMatrix = m.inv();
+
+	Matrix3x3 calMatrix(1,0,-minx,0,1,-miny,0,0,1);
+	
+	Matrix3x3 translateToCenter = calMatrix*m;
+
+	Matrix3x3 inversedMatrix = translateToCenter.inv();
+
+	//inversedMatrix[0][2]+=minx;
+	//inversedMatrix[1][2]+=miny;
+
+
 	//prepara data for new image
 	int newImageWidth = maxx - minx;
 	int newImageHeight = maxy - miny;
@@ -240,24 +247,24 @@ void ImageProcess::inverseMapping( MyImage& img, Matrix3x3 m){
 	unsigned char* newImageData = new unsigned char[newImageWidth * newImageHeight* newImageChannels];
 
 	memset(newImageData , 0, newImageWidth* newImageHeight* newImageChannels);
-	
+
 	//inverse mapping
 	for(int y= 0;y < newImageHeight ;y ++){
 		for(int x = 0; x < newImageWidth; x ++ ){
 			Vector3d pixelPos(x,y,1);
 			pixelPos = inversedMatrix*pixelPos;
-		
+
 			for(int c = 0; c< newImageChannels ; c ++){
 				int ox= pixelPos[0];
 				int oy= pixelPos[1];
-				
+
 				if(ox>0 && ox < img.width && oy > 0 && oy < img.height){
-				newImageData[y*newImageWidth*newImageChannels + x*newImageChannels +c]=	
-					img.data[oy*img.width*img.channels + ox*img.channels + c];
+					newImageData[y*newImageWidth*newImageChannels + x*newImageChannels +c]=	
+						img.data[oy*img.width*img.channels + ox*img.channels + c];
 				}
 				else{
-					
-				newImageData[y*newImageWidth*newImageChannels + x*newImageChannels +c]=	0;
+
+					newImageData[y*newImageWidth*newImageChannels + x*newImageChannels +c]=	0;
 				}
 			}
 
@@ -266,10 +273,55 @@ void ImageProcess::inverseMapping( MyImage& img, Matrix3x3 m){
 
 	img = MyImage(newImageWidth, newImageHeight, newImageChannels, newImageData);
 
-	
+
 }
 
-//void  ImageProcess::inverseMapping(MyImage& img, double)
+void  ImageProcess::inverseMapping(MyImage& img, double strength, double cx, double cy){
+
+	int newImageWidth = img.width;
+	int newImageHeight = img.height;
+	int newImageChannels = img.channels;
+	unsigned char* newImageData = new unsigned char[newImageWidth * newImageHeight * newImageChannels];
+
+	memset(newImageData, 0, newImageWidth* newImageHeight * newImageChannels);
+
+
+	double centerX = newImageWidth* cx;
+	double centerY = newImageHeight* cy;
+	double mD;
+	if(img.width> img.height){
+		mD = img.width;
+	}else {
+		mD = img.height;
+	}
+
+	for(int y = 0; y != newImageHeight ;y ++){
+		for(int x =0; x != newImageWidth; x ++){
+			
+			double r=sqrt(pow(x-centerX, 2)+ pow(y-centerY, 2));
+
+			
+			double a = strength* ( r -mD  )/mD;
+
+			int ox =round( (x-centerX)*cos(a) + (y-centerY)* sin(a) + centerX);
+			int oy =round( -(x-centerX)*sin(a) + (y-centerY)* cos(a) + centerY);
+
+			for(int c = 0; c < newImageChannels ;c ++){
+
+				if(ox>0 && ox < img.width && oy > 0 && oy < img.height){
+					newImageData[y*newImageWidth*newImageChannels + x*newImageChannels +c]=	
+						img.data[oy*img.width*img.channels + ox*img.channels + c];
+				}
+				else{
+					newImageData[y*newImageWidth*newImageChannels + x*newImageChannels +c]=	0;
+				}
+			}
+		}
+	}
+
+	img = MyImage(newImageWidth, newImageHeight, newImageChannels , newImageData);
+
+}
 
 
 

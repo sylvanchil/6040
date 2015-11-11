@@ -21,7 +21,7 @@ OIIO_NAMESPACE_USING
 
 Manager manager;
 
-Resource res(640,480,3,new GLubyte[0]);
+Resource res(640,480,4,new unsigned char[640*480*4]);
 
 /*
    Convert the string s to lower case

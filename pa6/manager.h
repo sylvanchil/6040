@@ -35,8 +35,8 @@ public:
 		imageFilename(new char[0]),
 		resultFilename(new char[0]),
 			
-		twrilModeOn(true),
-		strength(7),
+		twrilModeOn(false),
+		strength(3.75),
 		centerX(0.5),
 		centerY(0.5),
 

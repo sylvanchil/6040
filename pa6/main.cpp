@@ -130,7 +130,7 @@ void process_input(Matrix3x3 &M){
 
 	float inputX;
 	float inputY;
-
+	float inputZ;
 	/* build identity matrix */
 	M.identity();
 
@@ -174,7 +174,14 @@ void process_input(Matrix3x3 &M){
 						Shear(M, inputX, inputY);
 					else
 						fprintf(stderr,"invalid scaling input\n");
-
+				
+				//twirl mode on
+				case 'n':
+					if(scanf("%f %f %f", &inputX, &inputY, &inputZ)){
+						manager.turnTwrilModeOn(inputX, inputY, inputZ);
+					}else{
+						fprintf(stderr, "invalid scaling input\n");
+					}
 
 					break;
 				case 'd':		/* Done, that's all for now */
@@ -249,23 +256,12 @@ void handleKey(unsigned char key,int x, int y){
 
 int main(int argc, char** argv){
 
-
 	Matrix3x3 M(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
 
-	//read in the input image
-	//
-
-	//next, build the transformation matrix
 	process_input(M);
-
 
 	cout << "Accumulated Matrix: " << endl;
 	cout << M << endl;
-
-	cout << "inversion of Matrix: " << endl;
-	cout << M.inv() << endl;
-	//finally display the warped image
-
 
 	if(!manager.parseArgs(argc, argv)){
 		manager.helpInfo();	
@@ -273,7 +269,6 @@ int main(int argc, char** argv){
 	}
 
 	manager.takeMatrix(M);
-
 
 	init();	
 	glutInit(&argc, argv);

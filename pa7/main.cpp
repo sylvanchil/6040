@@ -1,8 +1,8 @@
 /************************************
-*    name: cong qiu                 *
-*    email: congq@g.clemson.edu     *
-*    date: OCT, 4th, 2015           *
-*************************************/
+ *    name: cong qiu                 *
+ *    email: congq@g.clemson.edu     *
+ *    date: OCT, 4th, 2015           *
+ *************************************/
 
 #include<OpenImageIO/imageio.h>
 OIIO_NAMESPACE_USING
@@ -62,6 +62,26 @@ void Translate(Matrix3x3 &M, float dx, float dy){
 
 	R[0][2] = dx;
 	R[1][2] = dy;
+
+	Matrix3x3 Prod = R * M;
+
+	for(row = 0; row < 3; row++) {
+		for(col = 0; col < 3; col++) {
+			M[row][col] = Prod[row][col];
+		}
+	}
+}
+
+
+
+//shear hx hy
+
+void Perspective(Matrix3x3 &M, float hx, float hy){
+	int row, col;
+	Matrix3x3 R(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
+
+	R[2][0] = hx;
+	R[2][1] = hy;
 
 	Matrix3x3 Prod = R * M;
 
@@ -174,15 +194,20 @@ void process_input(Matrix3x3 &M){
 						Shear(M, inputX, inputY);
 					else
 						fprintf(stderr,"invalid scaling input\n");
-				
-				//twirl mode on
+					break;	
+					//twirl mode on
 				case 'n':
 					if(scanf("%f %f %f", &inputX, &inputY, &inputZ)){
 						manager.turnTwrilModeOn(inputX, inputY, inputZ);
 					}else{
 						fprintf(stderr, "invalid scaling input\n");
 					}
-
+					break;
+				case 'p':
+					if(scanf("%f %f", &inputX, &inputY))
+						Perspective(M, inputX, inputY);
+					else
+						fprintf(stderr,"invalid scaling input\n");
 					break;
 				case 'd':		/* Done, that's all for now */
 					done = true;
@@ -277,7 +302,7 @@ int main(int argc, char** argv){
 	glutInitWindowPosition(0, 0);
 	glutCreateWindow(argv[0]);
 	glutDisplayFunc(display);
-	
+
 	glutKeyboardFunc(handleKey);
 	glutMainLoop();
 	return 0;

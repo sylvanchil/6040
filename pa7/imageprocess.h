@@ -1,4 +1,4 @@
-/************************************
+/***********************************
 *    name: cong qiu                 *
 *    email: congq@g.clemson.edu     *
 *    date: OCT, 4th, 2015           *
@@ -28,6 +28,5 @@ public:
 	void inverseMapping(MyImage& img, Matrix3x3 m);
 
 	void inverseMapping(MyImage& img, double cx, double cy, double s);
-
 
 };

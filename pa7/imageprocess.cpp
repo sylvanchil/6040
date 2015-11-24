@@ -166,112 +166,112 @@ void ImageProcess::applyGaborFilterTo(MyImage& m, float t, float s, float p){
 	applyFilterTo(m, Filter(size, 0, value));
 	delete value;
 }
+/*
+   void ImageProcess::bilinearWarp(MyImage& img, Matrix3x3 m){
+   Vector3d topLeft	(0			,0			, 1);
+   Vector3d topRight	(img.width	,0			, 1);
+   Vector3d buttomLeft	(0			,img.height	, 1);
+   Vector3d buttomRight(img.width	,img.height	, 1);
 
-void ImageProcess::bilinearWarp(MyImage& img, Matrix3x3 m){
-	Vector3d topLeft	(0			,0			, 1);
-	Vector3d topRight	(img.width	,0			, 1);
-	Vector3d buttomLeft	(0			,img.height	, 1);
-	Vector3d buttomRight(img.width	,img.height	, 1);
+   topLeft = m* topLeft;
+   topRight = m*topRight;
+   buttomLeft = m* buttomLeft;
+   buttomRight = m* buttomRight;
 
-	topLeft = m* topLeft;
-	topRight = m*topRight;
-	buttomLeft = m* buttomLeft;
-	buttomRight = m* buttomRight;
+   double xs[4]= { topLeft[0]/topLeft[2], topRight[0]/topRight[2], buttomRight[0]/buttomRight[2], buttomLeft[0]/buttomLeft[2]};
+   double ys[4]= { topLeft[1]/topLeft[2], topRight[1]/topRight[2], buttomRight[1]/buttomRight[2], buttomLeft[1]/buttomLeft[2]};
 
-	double xs[4]= { topLeft[0]/topLeft[2], topRight[0]/topRight[2], buttomRight[0]/buttomRight[2], buttomLeft[0]/buttomLeft[2]};
-	double ys[4]= { topLeft[1]/topLeft[2], topRight[1]/topRight[2], buttomRight[1]/buttomRight[2], buttomLeft[1]/buttomLeft[2]};
+   double maxx, minx, maxy, miny;
 
-	double maxx, minx, maxy, miny;
+//find the range of x and y
+if(xs[0]> xs[1]){
+maxx = xs[0];
+minx = xs[1];
+}else{
+maxx = xs[1];
+minx = xs[0];
+}
 
-	//find the range of x and y
-	if(xs[0]> xs[1]){
-		maxx = xs[0];
-		minx = xs[1];
-	}else{
-		maxx = xs[1];
-		minx = xs[0];
-	}
+if(xs[2]> maxx){
+maxx = xs[2];
+}else if(xs[2]< minx){
+minx = xs[2];
+}
 
-	if(xs[2]> maxx){
-		maxx = xs[2];
-	}else if(xs[2]< minx){
-		minx = xs[2];
-	}
+if(xs[3]> maxx){
+maxx = xs[3];
+}else if(xs[3]< minx){
+minx = xs[3];
+}
+//y max min
+if(ys[0]> ys[1]){
+maxy = ys[0];
+miny = ys[1];
+}else{
+maxy = ys[1];
+miny = ys[0];
+}
 
-	if(xs[3]> maxx){
-		maxx = xs[3];
-	}else if(xs[3]< minx){
-		minx = xs[3];
-	}
-	//y max min
-	if(ys[0]> ys[1]){
-		maxy = ys[0];
-		miny = ys[1];
-	}else{
-		maxy = ys[1];
-		miny = ys[0];
-	}
+if(ys[2]> maxy){
+maxy = ys[2];
+}else if(ys[2]< miny){
+miny = ys[2];
+}
 
-	if(ys[2]> maxy){
-		maxy = ys[2];
-	}else if(ys[2]< miny){
-		miny = ys[2];
-	}
+if(ys[3]> maxy){
+maxy = ys[3];
+}else if(ys[3]< miny){
+miny = ys[3];
+}
 
-	if(ys[3]> maxy){
-		maxy = ys[3];
-	}else if(ys[3]< miny){
-		miny = ys[3];
-	}
+//translation, to move the image to center;
+Matrix3x3 calMatrix(1,0,-minx,0,1,-miny,0,0,1);
 
-	//translation, to move the image to center;
-	Matrix3x3 calMatrix(1,0,-minx,0,1,-miny,0,0,1);
+Matrix3x3 translateToCenter = calMatrix*m;
 
-	Matrix3x3 translateToCenter = calMatrix*m;
+Matrix3x3 inversedMatrix = translateToCenter.inv();
 
-	Matrix3x3 inversedMatrix = translateToCenter.inv();
+//	double factor= inversedMatrix[2][2];
 
-	//	double factor= inversedMatrix[2][2];
+//prepara data for new image
+int newImageWidth = maxx - minx;
+int newImageHeight = maxy - miny;
+int newImageChannels = img.channels;
+unsigned char* newImageData = new unsigned char[newImageWidth * newImageHeight* newImageChannels];
 
-	//prepara data for new image
-	int newImageWidth = maxx - minx;
-	int newImageHeight = maxy - miny;
-	int newImageChannels = img.channels;
-	unsigned char* newImageData = new unsigned char[newImageWidth * newImageHeight* newImageChannels];
+memset(newImageData , 0, newImageWidth* newImageHeight* newImageChannels);
 
-	memset(newImageData , 0, newImageWidth* newImageHeight* newImageChannels);
+for(int y= 0;y < newImageHeight ;y ++){
+	for(int x = 0; x < newImageWidth; x ++ ){
+		Vector3d pixelPos(x,y,1);
+		pixelPos = inversedMatrix*pixelPos;
 
-	for(int y= 0;y < newImageHeight ;y ++){
-		for(int x = 0; x < newImageWidth; x ++ ){
-			Vector3d pixelPos(x,y,1);
-			pixelPos = inversedMatrix*pixelPos;
+		for(int c = 0; c< newImageChannels ; c ++){
+			int ox= round(pixelPos[0]/pixelPos[2]);
+			int oy= round(pixelPos[1]/pixelPos[2]);
 
-			for(int c = 0; c< newImageChannels ; c ++){
-				int ox= round(pixelPos[0]/pixelPos[2]);
-				int oy= round(pixelPos[1]/pixelPos[2]);
-
-				if(ox>0 && ox < img.width && oy > 0 && oy < img.height){
-					newImageData[y*newImageWidth*newImageChannels + x*newImageChannels +c]=	
-						img.data[oy*img.width*img.channels + ox*img.channels + c];
-				}
-				else{
-
-					newImageData[y*newImageWidth*newImageChannels + x*newImageChannels +c]=	0;
-				}
+			if(ox>0 && ox < img.width && oy > 0 && oy < img.height){
+				newImageData[y*newImageWidth*newImageChannels + x*newImageChannels +c]=	
+					img.data[oy*img.width*img.channels + ox*img.channels + c];
 			}
+			else{
 
+				newImageData[y*newImageWidth*newImageChannels + x*newImageChannels +c]=	0;
+			}
 		}
+
 	}
-	img = MyImage(newImageWidth, newImageHeight, newImageChannels, newImageData);
+}
+img = MyImage(newImageWidth, newImageHeight, newImageChannels, newImageData);
 
 
 
 
 
 }
+*/
 
-
-void ImageProcess::inverseMapping( MyImage& img, Matrix3x3 m){
+void ImageProcess::inverseMapping( MyImage& img, Matrix3x3 m, int flag){
 	Vector3d topLeft	(0			,0			, 1);
 	Vector3d topRight	(img.width	,0			, 1);
 	Vector3d buttomLeft	(0			,img.height	, 1);
@@ -354,19 +354,42 @@ void ImageProcess::inverseMapping( MyImage& img, Matrix3x3 m){
 				int ox= round(pixelPos[0]/pixelPos[2]);
 				int oy= round(pixelPos[1]/pixelPos[2]);
 
-				if(ox>0 && ox < img.width && oy > 0 && oy < img.height){
-					newImageData[y*newImageWidth*newImageChannels + x*newImageChannels +c]=	
-						img.data[oy*img.width*img.channels + ox*img.channels + c];
+				if(ox>1 && ox < img.width-1 && oy > 1 && oy < img.height-1){
+					if(flag== 0){
+						newImageData[y*newImageWidth*newImageChannels + x*newImageChannels +c]=	
+							img.data[oy*img.width*img.channels + ox*img.channels + c];
+					}else if(flag==1){
+
+						int orx = floor(pixelPos[0]/pixelPos[2]);
+						int ory = floor(pixelPos[1]/pixelPos[2]);
+						double da = pixelPos[0]/pixelPos[2]- orx;
+						double db = pixelPos[1]/pixelPos[2]- ory;
+
+						Vector2d va(1-da, da);
+						Vector2d vb(1-db, db);
+
+						Matrix2x2 m(
+							img.data[ory*img.width*img.channels + orx*img.channels + c],
+							img.data[ory*img.width*img.channels + (orx+1)*img.channels + c],
+							img.data[(ory+1)*img.width*img.channels + orx*img.channels + c],
+							img.data[(ory+1)*img.width*img.channels + (orx+1)*img.channels + c]
+						);	
+						
+						newImageData[y*newImageWidth*newImageChannels + x*newImageChannels +c]=	
+							vb*m*va;
+					}
 				}
 				else{
 
 					newImageData[y*newImageWidth*newImageChannels + x*newImageChannels +c]=	0;
 				}
-			}
 
+			}
 		}
+
 	}
-	img = MyImage(newImageWidth, newImageHeight, newImageChannels, newImageData);
+
+img = MyImage(newImageWidth, newImageHeight, newImageChannels, newImageData);
 
 }
 

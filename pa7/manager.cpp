@@ -65,7 +65,7 @@ void Manager::run(){
 		ip.inverseMapping(resultImage, strength, centerX , centerY);
 	}	
 	else{
-		ip.inverseMapping(resultImage, matrix3);
+		ip.inverseMapping(resultImage, matrix3, 0);
 	}
 //	save();
 
@@ -89,6 +89,11 @@ void Manager::turnTwrilModeOn(double s, double x,double y){
 	centerX = x;
 	centerY = y;
 
+}
+
+void Manager::repairInverseMapping(){
+	resultImage= originImage;
+	ip.inverseMapping(resultImage, matrix3 ,1);
 }
 
 

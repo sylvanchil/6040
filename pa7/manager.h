@@ -26,6 +26,7 @@ public:
 	bool canWrite();
 	void turnTwrilModeOn(double s, double x, double y);
 	//output image data to displaying buffer
+	void repairInverseMapping();
 	void display(unsigned char* des);
 	//initialize the display buffer and windowsize 
 	void prepare(int& wid, int& hei, int& c);

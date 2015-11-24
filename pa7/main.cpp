@@ -270,6 +270,10 @@ void handleKey(unsigned char key,int x, int y){
 		case 27:
 			exit(0);
 			break;
+		case 'r':
+			manager.repairInverseMapping();
+			manager.display(res.displayData);	
+			break;
 		default:
 			break;
 	}

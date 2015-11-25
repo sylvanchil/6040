@@ -1,17 +1,17 @@
 /************************************
 *    name: cong qiu                 *
 *    email: congq@g.clemson.edu     *
-*    date: NOV, 12th, 2015           *
+*    date: NOV, 24th, 2015           *
 *************************************/
 
 I.Description:
-This program finish all requirements in pa6.
+This program finish all requirements in pa7.
 
 II.Usage:
 a)make
 	make
 b)to run
-	./warp imagename [outputimagename]
+	./warp imagename [outputimagename] < in
 
 ps. <> is required, [] is optional, add "-t" to output file without displaying.
 	
@@ -21,6 +21,7 @@ ps. <> is required, [] is optional, add "-t" to output file without displaying.
 		t tx ty 	, to translate image
 		h hx hy 	, to shear image
 		n s cx cy	, to twirl image
+		p px py		, perspective warp using px and py
 		d 	   		, to finish input
 
 III.Code Structure:
@@ -34,13 +35,15 @@ III.Code Structure:
 	requirement:
 		IO 			basically done by singleton class FileIO
 		display, 	object of MyImage could output its data to desinated displayingbuffer
-		basic warping, a member funciton of ImageProcess , named inversedMapping does the job.
-		twirl 		did not use the original twirl mapping formula or it inversion in the program, 
-					using 	u = x*cos(a)+ y*sin(a)
-							v = -x*sin(a)+ y*cos(a)
-							a = strength(r - minDim)/minDim
-					this is a derivation of the inversed twirl mapping formula, it does exactly the same thing as the original one does, just looks different.
-	
+		warping,	a member funciton of ImageProcess , named inversedMapping does the job.
+		repair, 	when calling function ImageProcess::inversedMapping() with flag 1,as the third parameter, the repair would be done.
+		supersampling 
+					for each pixel(x,y), take 9 sample (x-0.33, y-0.33), 
+					(x, y-0.33),(x+0.33, y-0.33),(x-0.33, y),(x, y),
+					(x+0.33, y),(x-0.33,y+0.33),(x,y+0.33),(x+0.33,y+0.33)
+					then apply inversedMapping then bilinear iterpolation on them.
+					finally use the average value of them as the finally value.
+
 VI.Attribution
 	Makefile is originally writen by DJ, I made some modification on it to fit this project.
 	Matrix and Vector implemented by Dr.house.

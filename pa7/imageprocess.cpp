@@ -9,6 +9,8 @@
 #include<cmath>
 #include<iostream>
 #include"colorwindow.h"
+#include<vector>
+
 
 void ImageProcess::hsvMask(MyImage& img, float hB, float hU, float sB, float sU, float vB, float vU){
 	if(img.getChannels()!=4){
@@ -359,6 +361,20 @@ void ImageProcess::inverseMapping( MyImage& img, Matrix3x3 m, int flag){
 			pixelBL = inversedMatrix*pixelBL;
 			pixelBR = inversedMatrix*pixelBR;
 
+			std::vector<Vector3d> pixelSamples;
+
+			for(int sy= -33; sy < 34; sy += 33){
+				for(int sx= -33; sx < 34; sx += 33){
+					pixelSamples.push_back(Vector3d(x + (double)sx/100, y + (double)sy/100, 1));
+				}
+			}
+			
+			for(int i = 0;i != pixelSamples.size(); i ++){
+				pixelSamples[i] = inversedMatrix*pixelSamples[i];
+				pixelSamples[i][0] = pixelSamples[i][0]/pixelSamples[i][2]; 
+				pixelSamples[i][1] = pixelSamples[i][1]/pixelSamples[i][2]; 
+			}
+	
 			for(int c = 0; c< newImageChannels ; c ++){
 				int ox= round(pixelPos[0]/pixelPos[2]);
 				int oy= round(pixelPos[1]/pixelPos[2]);
@@ -368,7 +384,7 @@ void ImageProcess::inverseMapping( MyImage& img, Matrix3x3 m, int flag){
 						newImageData[y*newImageWidth*newImageChannels + x*newImageChannels +c]=	
 							img.data[oy*img.width*img.channels + ox*img.channels + c];
 					}else if(flag==1){
-
+/*
 						double boundary[4];
 
 						boundary[0] = (pixelTL[1]/pixelTL[2]< pixelTR[1]/pixelTR[2]? pixelTL[1]/pixelTL[2]: pixelTR[1]/pixelTR[2]);
@@ -389,8 +405,27 @@ void ImageProcess::inverseMapping( MyImage& img, Matrix3x3 m, int flag){
 						}
 
 						//bilinear
+*/						float value = 0;
+						for(int i = 0;i != pixelSamples.size(); i++){
+							int orx = floor(pixelSamples[i][0]);
+							int ory = floor(pixelSamples[i][1]);
+							double da = pixelSamples[i][0]- orx;
+							double db = pixelSamples[i][1]- ory;
 
-						int orx = floor(pixelPos[0]/pixelPos[2]);
+							Vector2d va(1-da, da);
+							Vector2d vb(1-db, db);
+
+							Matrix2x2 m(
+								img.data[ory*img.width*img.channels + orx*img.channels + c],
+								img.data[ory*img.width*img.channels + (orx+1)*img.channels + c],
+								img.data[(ory+1)*img.width*img.channels + orx*img.channels + c],
+								img.data[(ory+1)*img.width*img.channels + (orx+1)*img.channels + c]
+								);	
+
+								value += vb*m*va;
+	
+						} 
+				/*		int orx = floor(pixelPos[0]/pixelPos[2]);
 						int ory = floor(pixelPos[1]/pixelPos[2]);
 						double da = pixelPos[0]/pixelPos[2]- orx;
 						double db = pixelPos[1]/pixelPos[2]- ory;
@@ -404,9 +439,9 @@ void ImageProcess::inverseMapping( MyImage& img, Matrix3x3 m, int flag){
 								img.data[(ory+1)*img.width*img.channels + orx*img.channels + c],
 								img.data[(ory+1)*img.width*img.channels + (orx+1)*img.channels + c]
 								);	
-
-						newImageData[y*newImageWidth*newImageChannels + x*newImageChannels +c]=	
-							((vb*m*va)+value)/(sampleSize+1);
+*/
+						newImageData[y*newImageWidth*newImageChannels + x*newImageChannels +c]=	value/9;
+							//(vb*m*va);
 					}
 				}
 				else{

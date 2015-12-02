@@ -98,10 +98,21 @@ void Manager::adjustSaturation(){
 	historyImages.push_back(MyImage(resultImage));
 
 }
-void Manager::adjustContrast(){}
+void Manager::adjustContrast(){
+	ip.adjustContrast(resultImage, resultImage, 0.1);
+	historyImages.push_back(MyImage(resultImage));
+}
+
+
 void Manager::adjustWhitebalance(){}
-void Manager::adjustHighlight(){}
-void Manager::adjustShadow(){}
+void Manager::adjustHighlight(){
+	ip.adjustHighlight(resultImage,resultImage, 0.1);
+	historyImages.push_back(MyImage(resultImage));
+}
+void Manager::adjustShadow(){
+	ip.adjustShadow(resultImage,resultImage, 0.1);
+	historyImages.push_back(MyImage(resultImage));
+}
 
 
 

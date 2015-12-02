@@ -77,15 +77,108 @@ void ImageProcess::adjustSaturation(MyImage& img, MyImage& area, double value){
 
 }
 
-void ImageProcess::adjustHighlight(MyImage& img, MyImage& area, double value){}
+void ImageProcess::adjustHighlight(MyImage& img, MyImage& area, double value){
+	area= area; //delete later.
+	float h=0;
+	float s=0;
+	float v=0;
 
-void ImageProcess::adjustShadow(MyImage& img, MyImage& area, double value){}
+	unsigned int r = 0;
+	unsigned int g = 0;
+	unsigned int b = 0;
+	
+	float adj=0 ;
+
+	for(int y = 0;y != img.height; y ++){
+		for(int x =0; x != img.width;x ++){
+			RGBtoHSV(
+					img.data[y*img.width*img.channels+x*img.channels],
+					img.data[y*img.width*img.channels+x*img.channels+1],
+					img.data[y*img.width*img.channels+x*img.channels+2],
+					h,s,v
+					);
+	
+			if(v> 0.65){	
+				adj= v -0.65;
+			}else{
+				adj = 0;
+			}
+			
+			r= img.data[y*img.width*img.channels+x*img.channels]*(1.0+value*adj);
+			g=img.data[y*img.width*img.channels+x*img.channels+1]*(1.0+value*adj);
+			b=img.data[y*img.width*img.channels+x*img.channels+2]*(1.0+value*adj);
+
+			if(r > 255) r = 255;
+			if(g> 255) g = 255;
+			if(b> 255) b = 255;
+
+			//HSVtoRGB(h,s,v,r,g,b);
+			img.data[y*img.width*img.channels+x*img.channels] =r;
+			img.data[y*img.width*img.channels+x*img.channels+1] =g;
+			img.data[y*img.width*img.channels+x*img.channels+2] =b;
+		}
+	}
+
+
+
+
+}
+
+void ImageProcess::adjustShadow(MyImage& img, MyImage& area, double value){
+	area= area; //delete later.
+	float h=0;
+	float s=0;
+	float v=0;
+
+	unsigned int r = 0;
+	unsigned int g = 0;
+	unsigned int b = 0;
+	
+	float adj=0 ;
+
+	for(int y = 0;y != img.height; y ++){
+		for(int x =0; x != img.width;x ++){
+			RGBtoHSV(
+					img.data[y*img.width*img.channels+x*img.channels],
+					img.data[y*img.width*img.channels+x*img.channels+1],
+					img.data[y*img.width*img.channels+x*img.channels+2],
+					h,s,v
+					);
+	
+			if(v< 0.65){	
+				adj= 0.65 -v;
+			}else{
+				adj = 0;
+			}
+			
+			r= img.data[y*img.width*img.channels+x*img.channels]*(1.0-value*adj);
+			g=img.data[y*img.width*img.channels+x*img.channels+1]*(1.0-value*adj);
+			b=img.data[y*img.width*img.channels+x*img.channels+2]*(1.00-value*adj);
+
+			if(r > 255) r = 255;
+			if(g> 255) g = 255;
+			if(b> 255) b = 255;
+
+			//HSVtoRGB(h,s,v,r,g,b);
+			img.data[y*img.width*img.channels+x*img.channels] =r;
+			img.data[y*img.width*img.channels+x*img.channels+1] =g;
+			img.data[y*img.width*img.channels+x*img.channels+2] =b;
+		}
+	}
+
+
+
+
+
+
+
+}
 
 void ImageProcess::adjustWhitebalance(MyImage& img, MyImage& area, double value){}
 
 void ImageProcess::adjustContrast(MyImage& img, MyImage& area, double value){
 	adjustHighlight(img, area, value);
-	adjustShadow(img, area, -value);
+	adjustShadow(img, area, value);
 }
 
 

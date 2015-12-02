@@ -77,6 +77,22 @@ void handleKey(unsigned char key,int x, int y){
 			manager.adjustSaturation();
 			manager.display(res.displayData);
 			break;
+
+		case 'h':
+			manager.adjustHighlight();
+			manager.display(res.displayData);
+			break;
+
+		case 'j':
+			manager.adjustShadow();
+			manager.display(res.displayData);
+			break;
+
+		case 'l':
+			manager.adjustContrast();
+			manager.display(res.displayData);
+			break;
+			
 		case 'q':
 		case 27:
 			exit(0);

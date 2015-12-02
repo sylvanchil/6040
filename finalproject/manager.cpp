@@ -155,12 +155,3 @@ void Manager::prepare(int& w, int& h, int& c){
 }
 
 
-
-
-
-
-
-
-
-
-

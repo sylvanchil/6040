@@ -15,35 +15,31 @@ OIIO_NAMESPACE_USING
 #include<iostream>
 #include<vector>
 #include"manager.h"
+#include"resource.h"
 
 Manager manager;
-int windowWidth=640;
-int windowheight=480;
-int chanls = 3;
-//buffer to display
-GLubyte* display_data = new GLubyte[0];
+Resource res(640,480,4,new unsigned char[640*480*4]);
 
-//initialization
 void init(void)
 {
 	manager.run();
-	manager.prepare(windowWidth,windowheight,chanls);
-	display_data = new unsigned char[windowWidth*windowheight*chanls];
+	manager.prepare(res.windowWidth,res.windowHeight,res.channels);
+	res.displayData = new unsigned char[res.windowWidth*res.windowHeight*4];
 	glClearColor(0, 0, 0, 0);
 	glShadeModel(GL_FLAT);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	manager.display(display_data);
+	manager.display(res.displayData);
 }
 //callback in glut loop
 void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	if(chanls ==3)
-		glDrawPixels(windowWidth,windowheight,GL_RGB, GL_UNSIGNED_BYTE, display_data);
-	else if(chanls ==4)
-		glDrawPixels(windowWidth,windowheight,GL_RGBA, GL_UNSIGNED_BYTE, display_data);
-	else if(chanls ==1){
-		glDrawPixels(windowWidth,windowheight,GL_LUMINANCE, GL_UNSIGNED_BYTE, display_data);
+	if(res.channels ==3)
+		glDrawPixels(res.windowWidth,res.windowHeight,GL_RGB, GL_UNSIGNED_BYTE, res.displayData);
+	else if(res.channels ==4)
+		glDrawPixels(res.windowWidth,res.windowHeight,GL_RGBA, GL_UNSIGNED_BYTE, res.displayData);
+	else if(res.channels ==1){
+		glDrawPixels(res.windowWidth,res.windowHeight,GL_LUMINANCE, GL_UNSIGNED_BYTE, res.displayData);
 	}
 	glFlush();
 }
@@ -52,13 +48,9 @@ void handleKey(unsigned char key,int x, int y){
 	x=x;//useless, just get rid of the warning
 	y=y;//useless, just get rid of the warning
 	switch(key){	
-		case 'c':
-			manager.applyFilterToResult();
-			manager.display(display_data);
-			break;
 		case 'r':
 			manager.resetImage();
-			manager.display(display_data);
+			manager.display(res.displayData);
 			break;
 		case 'w':
 			if(manager.canWrite()){
@@ -75,13 +67,8 @@ void handleKey(unsigned char key,int x, int y){
 			break;
 		case 'u':
 			manager.undo();
-			manager.display(display_data);	
+			manager.display(res.displayData);	
 			break;
-		case 'f':{
-			std::string filterName;
-			std::cin >> filterName;
-			manager.changeFilter(filterName);
-			break;}
 		case 'q':
 		case 27:
 			exit(0);
@@ -97,20 +84,16 @@ int main(int argc, char** argv){
 		manager.helpInfo();	
 		exit(-1);
 	}
-	if(manager.thunderModeOn()){
-		manager.quickRun();
-		exit(0);
-	}
-
+	
 	init();	
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE|GLUT_RGBA);
-	glutInitWindowSize(windowWidth,windowheight);
+	glutInitWindowSize(res.windowWidth,res.windowHeight);
 	glutInitWindowPosition(0, 0);
 	glutCreateWindow(argv[0]);
 	glutDisplayFunc(display);
+
 	glutKeyboardFunc(handleKey);
 	glutMainLoop();
 	return 0;
-
 }

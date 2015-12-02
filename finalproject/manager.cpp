@@ -104,7 +104,12 @@ void Manager::adjustContrast(){
 }
 
 
-void Manager::adjustWhitebalance(){}
+void Manager::adjustWhitebalance(){
+	ip.adjustWhitebalance(resultImage, resultImage, -0.01);
+	historyImages.push_back(MyImage(resultImage));
+
+}
+
 void Manager::adjustHighlight(){
 	ip.adjustHighlight(resultImage,resultImage, 0.1);
 	historyImages.push_back(MyImage(resultImage));

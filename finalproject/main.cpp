@@ -92,7 +92,12 @@ void handleKey(unsigned char key,int x, int y){
 			manager.adjustContrast();
 			manager.display(res.displayData);
 			break;
-			
+		
+		case 'i':
+			manager.adjustWhitebalance();
+			manager.display(res.displayData);
+			break;
+
 		case 'q':
 		case 27:
 			exit(0);

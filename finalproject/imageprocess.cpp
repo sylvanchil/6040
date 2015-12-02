@@ -166,15 +166,28 @@ void ImageProcess::adjustShadow(MyImage& img, MyImage& area, double value){
 		}
 	}
 
-
-
-
-
-
-
 }
 
-void ImageProcess::adjustWhitebalance(MyImage& img, MyImage& area, double value){}
+void ImageProcess::adjustWhitebalance(MyImage& img, MyImage& area, double value){
+	area= area; //delete later.
+	
+	unsigned int r= 0;
+	unsigned int b = 0;
+
+	for(int y = 0;y != img.height; y ++){
+		for(int x =0; x != img.width;x ++){
+				
+			r = img.data[y*img.width*img.channels+x*img.channels] *(1+value);
+			b= img.data[y*img.width*img.channels+x*img.channels+2] *(1-value);
+		
+			if(r > 255) r = 255;
+			if(b> 255) b = 255;
+
+			img.data[y*img.width*img.channels+x*img.channels] = r;
+			img.data[y*img.width*img.channels+x*img.channels+2]=b; 
+		}
+	}
+}
 
 void ImageProcess::adjustContrast(MyImage& img, MyImage& area, double value){
 	adjustHighlight(img, area, value);

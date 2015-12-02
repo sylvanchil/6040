@@ -98,8 +98,8 @@ void ImageProcess::adjustHighlight(MyImage& img, MyImage& area, double value){
 					h,s,v
 					);
 	
-			if(v> 0.65){	
-				adj= v -0.65;
+			if(v> 0.5){	
+				adj= (v -0.5)*(v -0.5);
 			}else{
 				adj = 0;
 			}
@@ -145,8 +145,8 @@ void ImageProcess::adjustShadow(MyImage& img, MyImage& area, double value){
 					h,s,v
 					);
 	
-			if(v< 0.65){	
-				adj= 0.65 -v;
+			if(v< 0.5){	
+				adj= (0.5 -v)*(0.5-v);
 			}else{
 				adj = 0;
 			}

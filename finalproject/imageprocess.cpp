@@ -10,8 +10,8 @@
 #include<iostream>
 #include"colorwindow.h"
 
-void ImageProcess::adjustBrightness(MyImage& img, MyImage& area, double value ){
-	area= area; //delete later.
+void ImageProcess::adjustBrightness(MyImage& img,  MyImage& area, double value ){
+//	area= area; //delete later.
 	float h=0;
 	float s=0;
 	float v=0;
@@ -44,7 +44,7 @@ void ImageProcess::adjustBrightness(MyImage& img, MyImage& area, double value ){
 }
 
 void ImageProcess::adjustSaturation(MyImage& img, MyImage& area, double value){
-	area= area; //delete later.
+	//area= area; //delete later.
 	float h=0;
 	float s=0;
 	float v=0;
@@ -78,7 +78,7 @@ void ImageProcess::adjustSaturation(MyImage& img, MyImage& area, double value){
 }
 
 void ImageProcess::adjustHighlight(MyImage& img, MyImage& area, double value){
-	area= area; //delete later.
+//	area= area; //delete later.
 	float h=0;
 	float s=0;
 	float v=0;
@@ -125,7 +125,7 @@ void ImageProcess::adjustHighlight(MyImage& img, MyImage& area, double value){
 }
 
 void ImageProcess::adjustShadow(MyImage& img, MyImage& area, double value){
-	area= area; //delete later.
+//	area= area; //delete later.
 	float h=0;
 	float s=0;
 	float v=0;
@@ -169,7 +169,7 @@ void ImageProcess::adjustShadow(MyImage& img, MyImage& area, double value){
 }
 
 void ImageProcess::adjustWhitebalance(MyImage& img, MyImage& area, double value){
-	area= area; //delete later.
+//	area= area; //delete later.
 	
 	unsigned int r= 0;
 	unsigned int b = 0;

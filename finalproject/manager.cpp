@@ -1,8 +1,8 @@
 /************************************
-*    name: cong qiu                 *
-*    email: congq@g.clemson.edu     *
-*    date: OCT, 4th, 2015           *
-*************************************/
+ *    name: cong qiu                 *
+ *    email: congq@g.clemson.edu     *
+ *    date: OCT, 4th, 2015           *
+ *************************************/
 
 #include"manager.h"
 #include"colorwindow.h"
@@ -11,58 +11,22 @@ bool Manager::parseArgs(int argc, char** argv){
 	if(argc < 3)
 		return false;
 	int fileCount=0;
-	char* tmpFilenameList[3];
+	char* tmpFilenameList[2];
 
 	for(int i = 1; i!= argc; i++){
-		// argument "-xx"
-		if(argv[i][0]=='-'){
-			if(argv[i][1] =='g'){
-				if((i+3)<argc){
-					gFlag = true;
-					i ++ ;
-					theta= atof(argv[i]);
-					i++;
-					sigma = atof(argv[i]);
-					i ++ ;
-					period = atof(argv[i]);
-				}else{
-					return false;
-				}
-			}else if(argv[i][1] == 't'){
-				tFlag = true;
-			}
-		}
-		//end of if "-xx"
-		//start of else
-		else{
-			if(fileCount <4){
-				tmpFilenameList[fileCount] = argv[i];
-				fileCount++;
-			}else {
-				return false;
-			}
-		}
-		//end of else
-	}
-	if(gFlag&& fileCount ==3){
-		return false;
-	}
-	//if there are -g, the 1st filename is the input image
-	if(gFlag){
-		imageFilename= tmpFilenameList[0];
-		if (fileCount ==2){
-			writeFlag= true;
-			resultFilename = tmpFilenameList[1];
+
+		if(fileCount <3){
+			tmpFilenameList[fileCount] = argv[i];
+			fileCount++;
+		}else {
+			return false;
 		}
 	}
-	//else the 1st filename is the name of filter	
-	else{
-		filterFilename = tmpFilenameList[0];
-		imageFilename= tmpFilenameList[1];
-		if(fileCount==3){
-			writeFlag= true;
-			resultFilename = tmpFilenameList[2];
-		}
+
+	imageFilename= tmpFilenameList[0];
+	if(fileCount==2){
+		writeFlag= true;
+		resultFilename = tmpFilenameList[1];
 	}
 	return true;
 }
@@ -83,11 +47,6 @@ void Manager::run(){
 	originImage = originImage.to4ChannelsImage();
 	resultImage = originImage;
 	historyImages.push_back(MyImage(resultImage));
-	if(!gFlag){
-		if(!FileIO::getInstance().readFromFileToFilter(filter,filterFilename)){
-			exit(-1);	
-		}	
-	}
 }
 
 bool Manager::save(){
@@ -96,16 +55,6 @@ bool Manager::save(){
 		return false;
 	}
 	return true;
-}
-
-void Manager::applyFilterToResult(){
-	//apply filter to current resultimage accordingly 
-	if(!gFlag){
-		ip.applyFilterTo(resultImage, filter);
-	}else{
-		ip.applyGaborFilterTo(resultImage, theta, sigma, period);
-	}
-	historyImages.push_back(MyImage(resultImage));
 }
 
 void Manager::resetImage(){
@@ -117,25 +66,11 @@ void Manager::resetImage(){
 
 void Manager::undo(){
 	//todo 
+	if(historyImages.size()>1){
 	historyImages.pop_back();
-	resultImage= historyImages.back();
-}
-
-void Manager::changeFilter(std::string filterfile){
-	//todo 
-	if(!FileIO::getInstance().readFromFileToFilter(filter,filterfile.c_str())){
-			exit(-1);	
-		}
-}
-
-bool Manager::thunderModeOn(){
-	return tFlag;
-}
-
-void Manager::quickRun(){
-	run();
-	applyFilterToResult();
-	save();
+	if(!historyImages.empty())
+		resultImage= historyImages.back();
+	}
 }
 
 bool Manager::canWrite(){
@@ -153,5 +88,24 @@ void Manager::prepare(int& w, int& h, int& c){
 	h = originImage.getHeight();
 	c = originImage.getChannels();
 }
+
+void Manager::adjustBrightness(){
+	ip.adjustBrightness(resultImage, resultImage, 0.1);
+	historyImages.push_back(MyImage(resultImage));
+}
+void Manager::adjustSaturation(){
+	ip.adjustSaturation(resultImage, resultImage, 0.1);
+	historyImages.push_back(MyImage(resultImage));
+
+}
+void Manager::adjustContrast(){}
+void Manager::adjustWhitebalance(){}
+void Manager::adjustHighlight(){}
+void Manager::adjustShadow(){}
+
+
+
+
+
 
 

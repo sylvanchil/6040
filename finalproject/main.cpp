@@ -69,6 +69,14 @@ void handleKey(unsigned char key,int x, int y){
 			manager.undo();
 			manager.display(res.displayData);	
 			break;
+		case 'b':
+			manager.adjustBrightness();
+			manager.display(res.displayData);
+			break;
+		case 's':
+			manager.adjustSaturation();
+			manager.display(res.displayData);
+			break;
 		case 'q':
 		case 27:
 			exit(0);

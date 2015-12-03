@@ -20,7 +20,8 @@ public:
 	
 	}
 	MyImage(const MyImage& m):width(m.width), height(m.height), channels(m.channels), data(new float[width*height*channels]){
-		memcpy(data,m.data, width*height*channels*sizeof(float));
+		memcpy(data,m.data, width*height*channels*sizeof(float)
+		);
 	}
 	MyImage& operator=(const MyImage& my);
 
@@ -33,13 +34,16 @@ public:
 	int getHeight()const {return height;}
 	int getChannels()const {return channels;}
 
+	MyImage over(MyImage& image,int posx, int posy);
+
 	void flip();
 	void vflip();
 	void displayOutput(float* desBuff);
-	
+
 	friend class FileIO;
 	friend class Manager;
 	friend class ImageProcess;	
+
 };
 
 

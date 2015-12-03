@@ -17,15 +17,20 @@ MyImage::MyImage(int wid, int hei, int chan, float* dat):
 
 }
 
+
 MyImage& MyImage::operator=(const MyImage& my)
 {
 	width= my.width;
 	height= my.height;
 	channels = my.channels;
+	
 	delete data;
 	data = new float[width*height*channels];
+	
 	memcpy(data, my.data, width*height*channels*sizeof(float));
+
 	return *this;
+
 }
 
 MyImage MyImage::to4ChannelsImage(){
@@ -34,14 +39,14 @@ MyImage MyImage::to4ChannelsImage(){
 		return img;
 	}
 
-	float* newData = new float[width*height*4];
+	float* newData = new float[width*height*4*sizeof(float)];
 	for(int y = 0; y!= height; y++){
 		for(int x = 0;x != width; x ++){
 			for(int c = 0; c != 4; c ++){
 				if(c < 3){
 					newData[c+x*4+y*width*4] = data[c+x*3+y*width*3];
 				}else{
-					newData[c+x*4+y*width*4]= 255;	
+					newData[c+x*4+y*width*4]= 1.0;	
 				}
 			}
 		}
@@ -50,10 +55,24 @@ MyImage MyImage::to4ChannelsImage(){
 	return img;	
 }
 
+MyImage MyImage::over(MyImage& image, int posx, int posy){
+	MyImage newImage(image.to4ChannelsImage());
+
+	for(int y = 0; y< height && (y+posy)< newImage.height ; y++){
+		for(int x = 0; x< width && (x+posx< newImage.width ); x++){
+			for(int c = 0; c< 3; c++){
+				newImage.data[c + (x+posx) *4 + (y+posy)*newImage.width*4]=
+				newImage.data[c + (x+posx) *4 + (y+posy)*newImage.width*4] * (255-data[3+x*4+y*width*4])/255+data[c+ x*4 + y*width*4]*(data[3+x*4+y*width*4])/255;
+				 
+			}
+		
+		}
+	}
+	return newImage;
+
+}
 
 void MyImage::displayOutput(float* desBuff){
-
-
 	for(int y = 0; y < height ; y ++){
 		for(int x = 0;x < width; x++){
 			for(int c = 0; c < channels; c++){
@@ -62,8 +81,6 @@ void MyImage::displayOutput(float* desBuff){
 			}
 		}
 	}
-	
-//	memcpy(desBuff, data,height*width*channels* sizeof(float));
 
 }
 

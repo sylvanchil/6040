@@ -1,0 +1,24 @@
+/************************************
+*    name: cong qiu                 *
+*    email: congq@g.clemson.edu     *
+*    date: DEC, 2nd, 2015           *
+*************************************/
+
+I.Description:
+6040 final project
+
+II.Usage:
+a)make
+	make
+b)run
+	./adbrush inputimage outputimage
+
+	
+III.Code Structure:
+
+VI.Attribution
+	Makefile is originally writen by DJ, I made some modification on it to fit this project.
+
+
+
+

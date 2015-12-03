@@ -134,8 +134,8 @@ void Manager::setUseBrush(int i){
 }
 
 void Manager::magBrush(){
-	rSolid*=1.2;
-	rFading*=1.2;
+	rSolid*=1.11;
+	rFading*=1.11;
 
 }
 void Manager::minBrush(){
@@ -143,8 +143,20 @@ void Manager::minBrush(){
 	rFading*=0.9;
 }
 
+void Manager::magFading(){
+	rFading *=1.1;
+}
+
+void Manager::minFading(){
+	rFading*=0.9;
+	if(rFading < rSolid){
+		rFading= rSolid;
+	}	
+}
+
+
 void Manager::adjust(double value){
-	std::cout << "adjusting " << mode  << std::endl;
+	//std::cout << "adjusting " << mode  << std::endl;
 	switch(mode){
 		case 1:
 			ip.adjustBrightness(resultImage, maskImage, value);

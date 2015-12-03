@@ -80,6 +80,13 @@ void handleKey(unsigned char key,int x, int y){
 		case 'O':
 			manager.display(res.displayData);	
 			break;
+
+		case 'n':
+			manager.minFading();
+			break;
+		case 'm':
+			manager.magFading();
+			break;
 		case '1':
 		case '2':
 		case '3':
@@ -115,10 +122,10 @@ void SpecialKey(int Key, int x, int y){
 			manager.display(res.displayData);	
 			break;
 		case GLUT_KEY_LEFT:
-
+			manager.magBrush();
 			break;
 		case GLUT_KEY_RIGHT:
-
+			manager.minBrush();
 			break;
 
 	}
@@ -135,9 +142,12 @@ void MouseClick(int button, int state, int x, int y){
 			manager.setUseBrush(1);
 			recordMouse = true;
 		} else {
+			manager.adjust(0.05);
+			manager.display(res.displayData);
 			recordMouse = false;
 		}
 	}
+	glutPostRedisplay();
 }
 
 void MouseMove(int x, int y){

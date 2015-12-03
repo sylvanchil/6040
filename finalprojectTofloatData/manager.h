@@ -38,7 +38,9 @@ public:
 	
 	void magBrush();
 	void minBrush();
-
+	void magFading();
+	void minFading();
+	
 	void displayOriginal(float* des);
 	void savemask();
 

@@ -1,8 +1,8 @@
 /************************************
-*    name: cong qiu                 *
-*    email: congq@g.clemson.edu     *
-*    date: OCT, 4th, 2015           *
-*************************************/
+ *    name: cong qiu                 *
+ *    email: congq@g.clemson.edu     *
+ *    date: OCT, 4th, 2015           *
+ *************************************/
 
 #include<OpenImageIO/imageio.h>
 OIIO_NAMESPACE_USING
@@ -30,7 +30,11 @@ void init(void)
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	manager.display(res.displayData);
 }
+
 //callback in glut loop
+
+
+
 void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -69,31 +73,30 @@ void handleKey(unsigned char key,int x, int y){
 			manager.undo();
 			manager.display(res.displayData);	
 			break;
-		case 'b':
+		case '1':
 			manager.adjustBrightness();
 			manager.display(res.displayData);
 			break;
-		case 's':
+		case '2':
 			manager.adjustSaturation();
 			manager.display(res.displayData);
 			break;
 
-		case 'h':
+		case '3':
 			manager.adjustHighlight();
 			manager.display(res.displayData);
 			break;
 
-		case 'j':
+		case '4':
 			manager.adjustShadow();
 			manager.display(res.displayData);
 			break;
 
-		case 'l':
+		case '5':
 			manager.adjustContrast();
 			manager.display(res.displayData);
 			break;
-		
-		case 'i':
+		case '6':
 			manager.adjustWhitebalance();
 			manager.display(res.displayData);
 			break;
@@ -108,12 +111,32 @@ void handleKey(unsigned char key,int x, int y){
 	glutPostRedisplay();
 }
 
+void SpecialKey(int Key, int x, int y){
+	switch(key){
+	case GLUT_KEY_UP:
+	
+		break;
+	case GLUT_KEY_DOWN:
+
+		break;
+	case GLUT_KEY_LEFT:
+		
+		break;
+	case GLUT_KEY_RIGHT:
+		
+		break;
+		
+	}
+
+
+}
+
 int main(int argc, char** argv){
 	if(!manager.parseArgs(argc, argv)){
 		manager.helpInfo();	
 		exit(-1);
 	}
-	
+
 	init();	
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE|GLUT_RGBA);
@@ -123,6 +146,10 @@ int main(int argc, char** argv){
 	glutDisplayFunc(display);
 
 	glutKeyboardFunc(handleKey);
+	glutSpecialFunc();
+	glutMouseFunc();
+	glutMotionFunc();
+
 	glutMainLoop();
 	return 0;
 }

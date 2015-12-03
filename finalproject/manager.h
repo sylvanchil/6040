@@ -55,11 +55,9 @@ private:
 
 	MyImage originImage;
 	MyImage resultImage;
-	//store the history, not implemented yet
 	std::vector<MyImage> historyImages; 
 	ImageProcess ip;
 	
 	Manager(const Manager& m);
 	Manager& operator=(const Manager& m);
-
 };

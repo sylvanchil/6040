@@ -17,4 +17,5 @@ public:
 	void adjustHighlight(MyImage& img, MyImage& area, double value);
 	void adjustShadow(MyImage& img, MyImage& area, double value);
 
+	void brushMaskImage(MyImage& mimg, int x, int y);
 };

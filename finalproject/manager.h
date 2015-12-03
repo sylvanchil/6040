@@ -27,16 +27,21 @@ public:
 	void display(unsigned char* des);
 	//initialize the display buffer and windowsize 
 	void prepare(int& wid, int& hei, int& c);
-	
-	void adjustBrightness();
-	void adjustSaturation();
-	void adjustContrast();
-	void adjustWhitebalance();
-	void adjustHighlight();
-	void adjustShadow();
 
+	void setMode(int i);
+
+	void addBrushPaint(int x, int y);
+	
+	void adjust(double value);
+	
 	Manager():
 		writeFlag(false),
+		mode(1),
+		
+		rSolid(50),
+		rFading(75),
+
+		maskImage(MyImage()),
 		imageFilename(new char[0]),
 		resultFilename(new char[0]),
 		
@@ -49,6 +54,20 @@ public:
 
 private:
 	bool writeFlag;
+
+	int mode;
+	/*
+	1 Brightness
+	2 Saturation
+	3 Hightlight
+	4 Shadow 
+	5 Whitebalance
+	6 Contrast
+	*/
+	double rSolid;
+	double rFading;
+	
+	MyImage maskImage;
 
 	char* imageFilename;
 	char* resultFilename;

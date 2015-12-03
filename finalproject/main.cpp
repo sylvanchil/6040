@@ -31,10 +31,6 @@ void init(void)
 	manager.display(res.displayData);
 }
 
-//callback in glut loop
-
-
-
 void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -74,31 +70,13 @@ void handleKey(unsigned char key,int x, int y){
 			manager.display(res.displayData);	
 			break;
 		case '1':
-			manager.adjustBrightness();
-			manager.display(res.displayData);
-			break;
 		case '2':
-			manager.adjustSaturation();
-			manager.display(res.displayData);
-			break;
-
 		case '3':
-			manager.adjustHighlight();
-			manager.display(res.displayData);
-			break;
-
 		case '4':
-			manager.adjustShadow();
-			manager.display(res.displayData);
-			break;
-
 		case '5':
-			manager.adjustContrast();
-			manager.display(res.displayData);
-			break;
 		case '6':
-			manager.adjustWhitebalance();
-			manager.display(res.displayData);
+			manager.setMode(key);
+			std::cout << "int mode " << key<< std::endl;
 			break;
 
 		case 'q':
@@ -111,24 +89,44 @@ void handleKey(unsigned char key,int x, int y){
 	glutPostRedisplay();
 }
 
-void SpecialKey(int Key, int x, int y){
-	switch(key){
-	case GLUT_KEY_UP:
-	
-		break;
-	case GLUT_KEY_DOWN:
 
-		break;
-	case GLUT_KEY_LEFT:
-		
-		break;
-	case GLUT_KEY_RIGHT:
-		
-		break;
-		
+void SpecialKey(int Key, int x, int y){
+	switch(Key){
+		case GLUT_KEY_UP:
+			manager.adjust(0.05);
+			manager.display(res.displayData);	
+			break;
+		case GLUT_KEY_DOWN:
+			manager.adjust(-0.05);
+			manager.display(res.displayData);	
+			break;
+		case GLUT_KEY_LEFT:
+
+			break;
+		case GLUT_KEY_RIGHT:
+
+			break;
+
 	}
 
 
+	glutPostRedisplay();
+}
+
+void MouseClick(int button, int state, int x, int y){
+	if ( button == GLUT_LEFT_BUTTON ) {
+		if ( state == GLUT_DOWN ) {
+			recordMouse = true;
+		} else {
+			followMouse = false;
+		}
+	}
+}
+
+void MouseMove(int x, int y){
+	if(recordMouse){
+		manager.addBrushPaint(x, y);
+	}
 }
 
 int main(int argc, char** argv){
@@ -146,9 +144,9 @@ int main(int argc, char** argv){
 	glutDisplayFunc(display);
 
 	glutKeyboardFunc(handleKey);
-	glutSpecialFunc();
-	glutMouseFunc();
-	glutMotionFunc();
+	glutSpecialFunc(SpecialKey);
+	glutMouseFunc(MouseClick);
+	glutMotionFunc(MouseMove);
 
 	glutMainLoop();
 	return 0;

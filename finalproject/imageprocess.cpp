@@ -194,15 +194,9 @@ void ImageProcess::adjustContrast(MyImage& img, MyImage& area, double value){
 	adjustShadow(img, area, value);
 }
 
+void ImageProcess::brushMaskImage(MyImage& mimg, int x, int y){
 
 
 
 
-
-
-
-
-
-
-
-
+}

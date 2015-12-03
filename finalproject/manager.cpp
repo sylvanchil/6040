@@ -49,6 +49,8 @@ void Manager::run(){
 	historyImages.push_back(MyImage(resultImage));
 }
 
+
+
 bool Manager::save(){
 	//save the current result
 	if(!FileIO::getInstance().writeImageToFile(resultImage,resultFilename)){
@@ -67,9 +69,9 @@ void Manager::resetImage(){
 void Manager::undo(){
 	//todo 
 	if(historyImages.size()>1){
-	historyImages.pop_back();
-	if(!historyImages.empty())
-		resultImage= historyImages.back();
+		historyImages.pop_back();
+		if(!historyImages.empty())
+			resultImage= historyImages.back();
 	}
 }
 
@@ -89,36 +91,44 @@ void Manager::prepare(int& w, int& h, int& c){
 	c = originImage.getChannels();
 }
 
-void Manager::adjustBrightness(){
-	ip.adjustBrightness(resultImage, resultImage, 0.1);
-	historyImages.push_back(MyImage(resultImage));
+void Manager::setMode(int i){
+	if(i < '7' && i > '0'){
+		mode = i-48;
+	}
 }
-void Manager::adjustSaturation(){
-	ip.adjustSaturation(resultImage, resultImage, 0.1);
-	historyImages.push_back(MyImage(resultImage));
 
-}
-void Manager::adjustContrast(){
-	ip.adjustContrast(resultImage, resultImage, 0.1);
-	historyImages.push_back(MyImage(resultImage));
+void Manager::addBrushPaint(int x, int y){
+	ip.addBrushMaskImage(maskImage, x ,y);
 }
 
 
-void Manager::adjustWhitebalance(){
-	ip.adjustWhitebalance(resultImage, resultImage, -0.01);
+void Manager::adjust(double value){
+	std::cout << "adjusting " << mode  << std::endl;
+	switch(mode){
+		case 1:
+			ip.adjustBrightness(resultImage, maskImage, value);
+			break;
+		case 2:
+			ip.adjustSaturation(resultImage, maskImage, value);
+			break;
+		case 3:
+
+			ip.adjustHighlight(resultImage,maskImage, value);
+			break;
+		case 4:
+			ip.adjustShadow(resultImage,maskImage, value);
+			break;
+		case 5:
+			ip.adjustWhitebalance(resultImage, maskImage, value);
+			break;
+		case 6:
+			ip.adjustContrast(resultImage, maskImage,value);
+			break;
+	}
+
 	historyImages.push_back(MyImage(resultImage));
 
 }
-
-void Manager::adjustHighlight(){
-	ip.adjustHighlight(resultImage,resultImage, 0.1);
-	historyImages.push_back(MyImage(resultImage));
-}
-void Manager::adjustShadow(){
-	ip.adjustShadow(resultImage,resultImage, 0.1);
-	historyImages.push_back(MyImage(resultImage));
-}
-
 
 
 

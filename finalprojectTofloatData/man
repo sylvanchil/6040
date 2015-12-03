@@ -1,25 +1,29 @@
 basic usage:
 	./adbrush inputimage outputimage
 
-keyboard
-	1 adjust brightness 
-	2 adjust saturation
-	3 adjust highlight
-	4 adjust shadow
-	5 adjust whitebalance
-	6 adjust contrast
+	keyboard
+		1 adjust brightness 
+		2 adjust saturation
+		3 adjust highlight
+		4 adjust shadow
+		5 adjust whitebalance
+		6 adjust contrast
 
-	w write to file
-	s output mask image with the name masked.jpg
-	u undo modifycation	
-	o display original image 
-	O display the current result image
-	
-	up enhance
-	down oppsite to enhance 
-	left 
-	right 
+		up enhance effect
+		down diminish effect 
+		left magnify the brush
+		right shrink the brush
+		n magnify the fading area
+		m shrink the fading area
 
-mouse
-	push left button and brush the image to make the brush filter 
+		w write to file
+		s output mask image with the name masked.jpg
+		u undo modifycation	
+		o display original image 
+		O display the current result image
+
+	mouse
+		push left button and brush the image to make the brush filter 
+
+
 

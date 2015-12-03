@@ -12,6 +12,7 @@ a)make
 	make
 b)run
 	./adbrush inputimage outputimage
+
 	
 III.Code Structure:
 

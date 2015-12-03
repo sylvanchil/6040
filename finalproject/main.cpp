@@ -45,6 +45,7 @@ void display(void)
 	glFlush();
 }
 
+	
 void handleKey(unsigned char key,int x, int y){
 	x=x;//useless, just get rid of the warning
 	y=y;//useless, just get rid of the warning
@@ -78,7 +79,7 @@ void handleKey(unsigned char key,int x, int y){
 			break;
 		case 'O':
 			manager.display(res.displayData);	
-			break
+			break;
 		case '1':
 		case '2':
 		case '3':

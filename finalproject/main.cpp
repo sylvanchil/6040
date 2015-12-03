@@ -19,6 +19,7 @@ OIIO_NAMESPACE_USING
 
 Manager manager;
 Resource res(640,480,4,new unsigned char[640*480*4]);
+bool recordMouse = false;
 
 void init(void)
 {
@@ -65,8 +66,17 @@ void handleKey(unsigned char key,int x, int y){
 				std::cout << "no filename" << std::endl;
 			}
 			break;
+		case 's':
+			manager.savemask();
+			break;
 		case 'u':
 			manager.undo();
+			manager.display(res.displayData);	
+			break;
+		case 'o':
+			manager.displayOriginal(res.displayData);
+			break;
+		case 'O':
 			manager.display(res.displayData);	
 			break;
 		case '1':
@@ -75,6 +85,7 @@ void handleKey(unsigned char key,int x, int y){
 		case '4':
 		case '5':
 		case '6':
+			manager.setUseBrush(0);
 			manager.setMode(key);
 			std::cout << "int mode " << key<< std::endl;
 			break;
@@ -91,6 +102,8 @@ void handleKey(unsigned char key,int x, int y){
 
 
 void SpecialKey(int Key, int x, int y){
+	x = x;
+	y = y;
 	switch(Key){
 		case GLUT_KEY_UP:
 			manager.adjust(0.05);
@@ -114,11 +127,14 @@ void SpecialKey(int Key, int x, int y){
 }
 
 void MouseClick(int button, int state, int x, int y){
+	x = x;
+	y = y;
 	if ( button == GLUT_LEFT_BUTTON ) {
 		if ( state == GLUT_DOWN ) {
+			manager.setUseBrush(1);
 			recordMouse = true;
 		} else {
-			followMouse = false;
+			recordMouse = false;
 		}
 	}
 }

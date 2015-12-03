@@ -29,7 +29,7 @@ void ImageProcess::adjustBrightness(MyImage& img,  MyImage& area, double value )
 					h,s,v
 					);
 		
-			v = v*(1+ value);
+			v = v*(1+ value*((float)(area.data[y * area.width +x])/255));
 			if (v> 1.00){
 				v = 1.00;
 			}
@@ -62,7 +62,7 @@ void ImageProcess::adjustSaturation(MyImage& img, MyImage& area, double value){
 					h,s,v
 					);
 		
-			s = s*(1+ value);
+			s = s*(1+ value*((float)(area.data[y * area.width +x])/255)  );
 			if (s> 1.00){
 				s = 1.00;
 			}
@@ -104,9 +104,9 @@ void ImageProcess::adjustHighlight(MyImage& img, MyImage& area, double value){
 				adj = 0;
 			}
 			
-			r= img.data[y*img.width*img.channels+x*img.channels]*(1.0+value*adj);
-			g=img.data[y*img.width*img.channels+x*img.channels+1]*(1.0+value*adj);
-			b=img.data[y*img.width*img.channels+x*img.channels+2]*(1.0+value*adj);
+			r= img.data[y*img.width*img.channels+x*img.channels]*(1.0+value*((float)(area.data[y * area.width +x])/255)*adj);
+			g=img.data[y*img.width*img.channels+x*img.channels+1]*(1.0+value*((float)(area.data[y * area.width +x])/255)*adj);
+			b=img.data[y*img.width*img.channels+x*img.channels+2]*(1.0+value*((float)(area.data[y * area.width +x])/255)*adj);
 
 			if(r > 255) r = 255;
 			if(g> 255) g = 255;
@@ -151,9 +151,9 @@ void ImageProcess::adjustShadow(MyImage& img, MyImage& area, double value){
 				adj = 0;
 			}
 			
-			r= img.data[y*img.width*img.channels+x*img.channels]*(1.0-value*adj);
-			g=img.data[y*img.width*img.channels+x*img.channels+1]*(1.0-value*adj);
-			b=img.data[y*img.width*img.channels+x*img.channels+2]*(1.00-value*adj);
+			r= img.data[y*img.width*img.channels+x*img.channels]*(1.0-value*((float)(area.data[y * area.width +x])/255)*adj);
+			g=img.data[y*img.width*img.channels+x*img.channels+1]*(1.0-value*((float)(area.data[y * area.width +x])/255)*adj);
+			b=img.data[y*img.width*img.channels+x*img.channels+2]*(1.00-value*((float)(area.data[y * area.width +x])/255)*adj);
 
 			if(r > 255) r = 255;
 			if(g> 255) g = 255;
@@ -177,8 +177,8 @@ void ImageProcess::adjustWhitebalance(MyImage& img, MyImage& area, double value)
 	for(int y = 0;y != img.height; y ++){
 		for(int x =0; x != img.width;x ++){
 				
-			r = img.data[y*img.width*img.channels+x*img.channels] *(1+value);
-			b= img.data[y*img.width*img.channels+x*img.channels+2] *(1-value);
+			r = img.data[y*img.width*img.channels+x*img.channels] *(1+value*((float)(area.data[y * area.width +x])/255));
+			b= img.data[y*img.width*img.channels+x*img.channels+2] *(1-value*((float)(area.data[y * area.width +x])/255));
 		
 			if(r > 255) r = 255;
 			if(b> 255) b = 255;
@@ -194,9 +194,45 @@ void ImageProcess::adjustContrast(MyImage& img, MyImage& area, double value){
 	adjustShadow(img, area, value);
 }
 
-void ImageProcess::brushMaskImage(MyImage& mimg, int x, int y){
+void ImageProcess::brushMaskImage(MyImage& mimg, int bx, int by, double rs, double rf){
+	
+	double d= 0;
+	double v = 0;
+	for(int y = 0; y < mimg.height; y ++ ){
+		for(int x = 0; x < mimg .width; x ++){
 
-
+			d= sqrt((y-by)*(y-by)+(x-bx)*(x-bx));
+			if(d < rs){
+				v = 255;
+				if(mimg.data[y*mimg.width+x] < v)
+					{mimg.data[y*mimg.width+x] = v;}
+			}
+			if(d > rs && d < rf){
+				v = (d-rf)/(rs-rf)*255;
+				if(mimg.data[y*mimg.width+x] < v)
+					{mimg.data[y*mimg.width+x] = v;}
+					
+			}
+		}
+	}
+	
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -13,7 +13,7 @@ OBJS = $(addsuffix .o, $(basename $(shell find *.cpp)))
 DEPS = $(OBJS:.o=.d)
 
 # Set executable name
-EXEC = adbrush
+EXEC = warper
 
 # Declare the phony targets
 .PHONY: echo clean r clang gcc setclang setgcc vg

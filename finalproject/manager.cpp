@@ -43,13 +43,20 @@ void Manager::run(){
 	if(!FileIO::getInstance().readFromFileToImage(originImage,imageFilename)){
 		exit(-1);	
 	}
+
+
+
 	//initialize the result image
 	originImage = originImage.to4ChannelsImage();
 	resultImage = originImage;
 	historyImages.push_back(MyImage(resultImage));
+	unsigned char* maskData = new unsigned char[resultImage.width* resultImage.height];
+	for(int i = 0; i!= resultImage.width* resultImage.height; i++){
+		maskData[i] = 0;
+	}
+	maskImage = MyImage(resultImage.width, resultImage.height, 1,maskData );
+
 }
-
-
 
 bool Manager::save(){
 	//save the current result
@@ -57,6 +64,11 @@ bool Manager::save(){
 		return false;
 	}
 	return true;
+}
+
+void Manager::savemask(){
+	char maskimagename[] = "masked.jpg";
+	FileIO::getInstance().writeImageToFile(maskImage,maskimagename);
 }
 
 void Manager::resetImage(){
@@ -84,6 +96,10 @@ void Manager::display(unsigned char* des){
 	resultImage.displayOutput(des);
 }
 
+void Manager::displayOriginal(unsigned char* des){
+	originImage.displayOutput(des);
+}
+
 void Manager::prepare(int& w, int& h, int& c){
 	//set weight height channels for displaying
 	w = originImage.getWidth();
@@ -98,9 +114,34 @@ void Manager::setMode(int i){
 }
 
 void Manager::addBrushPaint(int x, int y){
-	ip.addBrushMaskImage(maskImage, x ,y);
+	ip.brushMaskImage(maskImage, x ,y, rSolid, rFading);
 }
 
+
+void Manager::setUseBrush(int i){
+	useBrush= i;
+	if(i == 0){
+		for(int i = 0; i!= resultImage.width* resultImage.height; i++){
+			maskImage.data[i] = 255;
+		}
+	}
+	else{
+		for(int i = 0; i!= resultImage.width* resultImage.height; i++){
+			maskImage.data[i] = 0;
+		}
+
+	}
+}
+
+void Manager::magBrush(){
+	rSolid*=1.2;
+	rFading*=1.2;
+
+}
+void Manager::minBrush(){
+	rSolid*=0.9;
+	rFading*=0.9;
+}
 
 void Manager::adjust(double value){
 	std::cout << "adjusting " << mode  << std::endl;

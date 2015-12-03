@@ -33,13 +33,22 @@ public:
 	void addBrushPaint(int x, int y);
 	
 	void adjust(double value);
+
+	void setUseBrush(int i);
 	
+	void magBrush();
+	void minBrush();
+
+	void displayOriginal(unsigned char*des);
+	void savemask();
+
 	Manager():
 		writeFlag(false),
 		mode(1),
-		
-		rSolid(50),
-		rFading(75),
+	
+		useBrush(0),
+		rSolid(20),
+		rFading(50),
 
 		maskImage(MyImage()),
 		imageFilename(new char[0]),
@@ -64,6 +73,7 @@ private:
 	5 Whitebalance
 	6 Contrast
 	*/
+	int useBrush;
 	double rSolid;
 	double rFading;
 	

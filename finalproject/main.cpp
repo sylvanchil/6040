@@ -78,7 +78,7 @@ void handleKey(unsigned char key,int x, int y){
 			break;
 		case 'O':
 			manager.display(res.displayData);	
-			break;
+			break
 		case '1':
 		case '2':
 		case '3':

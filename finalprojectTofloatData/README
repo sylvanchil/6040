@@ -30,7 +30,7 @@ b)run
 
 		w write to file
 		s output mask image with the name masked.jpg
-		u undo modifycation	
+		u undo modification	
 		o display original image 
 		O display the current result image
 
@@ -39,13 +39,22 @@ b)run
 
 	
 III.Code Structure:
-	
-
-
+	Userinter face: The behavior of keyboard and mouse are defined in main.cpp. 
+	program resource management: The manager keeps track of the orginal image, the result image, and history images, as well as the an ImageProcess object that actually apply the ImageProcessing.
+	Imageprocessing regionally: 
+		1.User's mouse motion will be detected and analyse in main.cpp (mouse() MouseMotion())
+		2.main call Manager::addBrushPaint(int x, inty) to modify the mask image.
+		3.when mouse left button up motion detected, main call Manager::adjust(), to apply the adjustment;
+		4.In Manager::adbrush(), different image processing function will be called based on the mode the manager currently on. For example, mode 1, dedicate that manager is about to change the brightness, so it ask ip to call ip.adjustBrightness(MyImage&, MyImage&, double); 
+		5.All the adjustment function take alikely 3 parameter. First MyImage& is the reference to be process, Second MyImage& is a one channel mask image, Third one is the value for adjustment.
+		6.In adjustment function, for each adjustment,  f()*(1+ value*area.data[y * area.width +x]) will be apply. area is the mask image.
+		7.others
+			1)file io: Mostly located in class FilIO, readFromFileToImage(MyImage& my, char* filename) to read, writeImageToFile(const MyImage& my, char* filename) to write.
+			2)history Image: a vector of MyImage store the image every time adjust() is called in manager.
+			3)glut resource : The  resource required by glut such as date to be displayed, windows size, are warpped into the an object of class resource.
 
 VI.Attribution
+	colorwindow.h is writen by Cem and J.Levine, I did some modification on it.
 	Makefile is originally writen by DJ, I made some modification on it to fit this project.
-
-
 
 

@@ -1,7 +1,7 @@
 /************************************
  *    name: cong qiu                 *
  *    email: congq@g.clemson.edu     *
- *    date: OCT, 4th, 2015           *
+ *    date: DEC, 3rd, 2015           *
  *************************************/
 
 #include<OpenImageIO/imageio.h>
@@ -108,7 +108,6 @@ void handleKey(unsigned char key,int x, int y){
 	glutPostRedisplay();
 }
 
-
 void SpecialKey(int Key, int x, int y){
 	x = x;
 	y = y;
@@ -129,8 +128,6 @@ void SpecialKey(int Key, int x, int y){
 			break;
 
 	}
-
-
 	glutPostRedisplay();
 }
 

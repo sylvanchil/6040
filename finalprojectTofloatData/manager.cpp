@@ -1,7 +1,7 @@
 /************************************
  *    name: cong qiu                 *
  *    email: congq@g.clemson.edu     *
- *    date: OCT, 4th, 2015           *
+ *    date: DEC, 3rd, 2015           *
  *************************************/
 
 #include"manager.h"
@@ -31,7 +31,6 @@ bool Manager::parseArgs(int argc, char** argv){
 	return true;
 }
 
-
 void Manager::helpInfo(){
 	//use cat command to output the manual
 	system("cat man");	
@@ -43,9 +42,6 @@ void Manager::run(){
 	if(!FileIO::getInstance().readFromFileToImage(originImage,imageFilename)){
 		exit(-1);	
 	}
-
-
-
 	//initialize the result image
 	originImage = originImage.to4ChannelsImage();
 	resultImage = originImage;
@@ -54,8 +50,8 @@ void Manager::run(){
 	for(int i = 0; i!= resultImage.width* resultImage.height; i++){
 		maskData[i] = 0.0;
 	}
+	//same width and height as the original image
 	maskImage = MyImage(resultImage.width, resultImage.height, 1,maskData );
-
 }
 
 bool Manager::save(){
@@ -79,7 +75,6 @@ void Manager::resetImage(){
 }
 
 void Manager::undo(){
-	//todo 
 	if(historyImages.size()>1){
 		historyImages.pop_back();
 		if(!historyImages.empty())
@@ -108,6 +103,7 @@ void Manager::prepare(int& w, int& h, int& c){
 }
 
 void Manager::setMode(int i){
+	// ascii '0' is 48
 	if(i < '7' && i > '0'){
 		mode = i-48;
 	}
@@ -116,7 +112,6 @@ void Manager::setMode(int i){
 void Manager::addBrushPaint(int x, int y){
 	ip.brushMaskImage(maskImage, x ,y, rSolid, rFading);
 }
-
 
 void Manager::setUseBrush(int i){
 	useBrush= i;
@@ -154,9 +149,8 @@ void Manager::minFading(){
 	}	
 }
 
-
 void Manager::adjust(double value){
-	//std::cout << "adjusting " << mode  << std::endl;
+	//different function will be called
 	switch(mode){
 		case 1:
 			ip.adjustBrightness(resultImage, maskImage, value);
@@ -182,9 +176,6 @@ void Manager::adjust(double value){
 	historyImages.push_back(MyImage(resultImage));
 
 }
-
-
-
 
 
 

@@ -56,43 +56,5 @@ bool FileIO::writeImageToFile(const MyImage& my, char* filename){
 
 }
 
-//read filter file
-bool FileIO::readFromFileToFilter(Filter& f,const char* filename){
-	std::ifstream in(filename);
-	if(!in)
-		return false;
-	int size ;
-	in >> size;
-	float* filterdata = new float[size*size];
-	float tmp;
-	float psum =0;
-	float nsum =0;
-	for(int i =0; i!= size* size ; i++){
-		in >> tmp;
-		if(tmp >0) 
-			psum += tmp;
-		else 
-			nsum+= abs(tmp);
-		filterdata[i] =tmp; 
-	}
-	
-	if(psum> nsum){
-		for(int i =0;i != size *size; i ++){
-			filterdata[i] = filterdata[i]/psum;	
-		}
-	}
-	else{
-		for(int i =0;i != size*size ;i ++){
-			
-			filterdata[i] = filterdata[i]/nsum;	
-		}
-	}
-	if(nsum > 0)
-		f= Filter(size, 0, filterdata);
-	else 
-		f= Filter(size, 1, filterdata);
-	return true;
-}
-
 
 

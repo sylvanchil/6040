@@ -1,7 +1,7 @@
 /************************************
 *    name: cong qiu                 *
 *    email: congq@g.clemson.edu     *
-*    date: OCT, 4th, 2015           *
+*    date: DEC, 3rd, 2015           *
 *************************************/
 
 #ifndef MYIMAGE_H_

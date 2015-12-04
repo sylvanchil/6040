@@ -1,6 +1,7 @@
 // colorwindow.cpp
 // Cem Yuksel
-
+//
+// modified at DEC 3rd 2015 by CongQiu
 #include "colorwindow.h"
 #include "math.h"
 

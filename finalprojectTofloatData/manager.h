@@ -1,7 +1,7 @@
 /************************************
 *    name: cong qiu                 *
 *    email: congq@g.clemson.edu     *
-*    date: OCT, 4th, 2015           *
+*    date: DEC, 3rd, 2015           *
 *************************************/
 
 #include"myimage.h"
@@ -11,7 +11,6 @@
 #include<vector>
 #include"fileio.h"
 #include"imageprocess.h"
-#include "filter.h"
 #include <string>
 
 class Manager{

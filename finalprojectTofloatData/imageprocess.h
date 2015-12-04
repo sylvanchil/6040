@@ -1,12 +1,10 @@
 /************************************
 *    name: cong qiu                 *
 *    email: congq@g.clemson.edu     *
-*    date: OCT, 4th, 2015           *
+*    date: DEC, 3rd, 2015           *
 *************************************/
 
 #include"myimage.h"
-#include"filter.h"
-
 
 class ImageProcess{
 public:
